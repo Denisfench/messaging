@@ -1,9 +1,9 @@
 {
 	"type": "modal",
-	"callback_id": "filter_alerts",
+	"callback_id": "filter_msgs",
 	"title": {
 		"type": "plain_text",
-		"text": "SOC-NET: Filter Alerts",
+		"text": "SOC-NET: Filter Messages",
 		"emoji": true
 	},
 	"submit": {
@@ -37,7 +37,7 @@
 			"type": "input",
 			"element": {
 				"type": "plain_text_input",
-				"action_id": "severity",
+				"action_id": "priority",
 				"placeholder": {
 					"type": "plain_text",
 					"text": "e.g. Low"
@@ -45,7 +45,7 @@
 			},
 			"label": {
 				"type": "plain_text",
-				"text": "Severity"
+				"text": "Priority"
 			},
 			"optional": true
 		},

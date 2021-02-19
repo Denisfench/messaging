@@ -1,9 +1,9 @@
 {
 	"type": "modal",
-	"callback_id": "update_alert",
+	"callback_id": "post_msg",
 	"title": {
 		"type": "plain_text",
-		"text": "SOC-NET: Update an Alert"
+		"text": "SOC-NET: Post a Msg"
 	},
 	"submit": {
 		"type": "plain_text",
@@ -18,33 +18,16 @@
 			"type": "input",
 			"element": {
 				"type": "plain_text_input",
-				"action_id": "alert_id",
-				"placeholder": {
-					"type": "plain_text",
-					"text": "What is the alert id?"
-				}
-			},
-			"label": {
-				"type": "plain_text",
-				"text": "Alert ID"
-			},
-            "optional": false
-		},
-        {
-			"type": "input",
-			"element": {
-				"type": "plain_text_input",
 				"action_id": "type",
 				"placeholder": {
 					"type": "plain_text",
-					"text": "Leave this field blank if you do not want to change it"
+					"text": "What is the type of emergecy? (e.g. Fire)"
 				}
 			},
 			"label": {
 				"type": "plain_text",
 				"text": "Event Type"
-			},
-            "optional": true
+			}
 		},
 		{
 			"type": "input",
@@ -54,23 +37,22 @@
 				"multiline": true,
 				"placeholder": {
 					"type": "plain_text",
-					"text": "Leave this field blank if you do not want to change it"
+					"text": "Please briefly describe the msg"
 				}
 			},
 			"label": {
 				"type": "plain_text",
 				"text": "Description"
-			},
-            "optional": true
+			}
 		},
 		{
 			"type": "input",
 			"element": {
 				"type": "static_select",
-				"action_id": "severity",
+				"action_id": "priority",
 				"placeholder": {
 					"type": "plain_text",
-					"text": "Leave this field blank if you do not want to change it"
+					"text": "Please select event priority"
 				},
 				"options": [
 					{
@@ -98,9 +80,8 @@
 			},
 			"label": {
 				"type": "plain_text",
-				"text": "Severity"
-			},
-            "optional": true
+				"text": "Priority"
+			}
 		},
 		{
 			"type": "input",
@@ -109,14 +90,13 @@
 				"action_id": "city",
 				"placeholder": {
 					"type": "plain_text",
-					"text": "Leave this field blank if you do not want to change it"
+					"text": "e.g. New York City"
 				}
 			},
 			"label": {
 				"type": "plain_text",
 				"text": "City"
-			},
-            "optional": true
+			}
 		},
 		{
 			"type": "input",
@@ -125,14 +105,13 @@
 				"action_id": "state",
 				"placeholder": {
 					"type": "plain_text",
-					"text": "Leave this field blank if you do not want to change it"
+					"text": "e.g. New York"
 				}
 			},
 			"label": {
 				"type": "plain_text",
 				"text": "State/Province/Region"
-			},
-            "optional": true
+			}
 		},
 		{
 			"type": "input",
@@ -141,14 +120,13 @@
 				"action_id": "country",
 				"placeholder": {
 					"type": "plain_text",
-					"text": "Leave this field blank if you do not want to change it"
+					"text": "e.g. USA"
 				}
 			},
 			"label": {
 				"type": "plain_text",
 				"text": "Country"
-			},
-            "optional": true
+			}
 		},
 		{
 			"type": "input",
@@ -157,45 +135,12 @@
 				"action_id": "zipcode",
 				"placeholder": {
 					"type": "plain_text",
-					"text": "Leave this field blank if you do not want to change it"
+					"text": "e.g. 10001"
 				}
 			},
 			"label": {
 				"type": "plain_text",
 				"text": "Zipcode/Postal Code"
-			},
-            "optional": true
-		},
-		{
-			"type": "input",
-			"label": {
-				"type": "plain_text",
-				"text": "Active Status"
-			},
-			"optional": true,
-			"element": {
-				"type": "static_select",
-				"placeholder": {
-					"type": "plain_text",
-					"text": "Please select a status"
-				},
-				"action_id": "active",
-				"options": [
-					{
-						"text": {
-							"type": "plain_text",
-							"text": "Active"
-						},
-						"value": "y"
-					},
-					{
-						"text": {
-							"type": "plain_text",
-							"text": "Not Active"
-						},
-						"value": "n"
-					}
-				]
 			}
 		},
 		{
@@ -205,14 +150,13 @@
 				"action_id": "sender",
 				"placeholder": {
 					"type": "plain_text",
-					"text": "Please provide your name and/or organization (e.g. NYU)"
+					"text": "e.g. NYU"
 				}
 			},
 			"label": {
 				"type": "plain_text",
 				"text": "Sender's Name and/or Organization"
-			},
-            "optional": false
+			}
 		}
 	]
 }

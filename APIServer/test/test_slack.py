@@ -124,7 +124,7 @@ class TestSlack(unittest.TestCase):
         """
         ret = slack_format_alert([])
         self.assertEqual({'text':
-                         'This alert does not exist or has been deleted.'},
+                         'This msg does not exist or has been deleted.'},
                          ret)
         ret = slack_format_alert([(1,
                                    '2020-03-04 17:54:20',
