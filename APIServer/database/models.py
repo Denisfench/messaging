@@ -1,8 +1,8 @@
 from APIServer import db
 
 
-class Alert(db.Model):
-    __tablename__ = "alerts"
+class Message(db.Model):
+    __tablename__ = "messages"
 
     id = db.Column(db.Integer, primary_key=True)
     event_datetime = db.Column(db.Text)

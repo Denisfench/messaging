@@ -1,22 +1,22 @@
 from APIServer.commons.api_utils import read_json
 
 
-def get_alert_form(path):
+def get_message_form(path):
     return read_json(path)
 
 
-def create_alert_json(alert_tuple):
+def create_message_json(msg_tuple):
     '''
-    Create alert_json from an alert tuple
+    Create msg_json from a message tuple
     '''
-    alert_json = {}
-    alert_json['datetime'] = alert_tuple[1]
-    alert_json['zipcode'] = alert_tuple[2]
-    alert_json['city'] = alert_tuple[3]
-    alert_json['state'] = alert_tuple[4]
-    alert_json['country'] = alert_tuple[5]
-    alert_json['type'] = alert_tuple[6]
-    alert_json['description'] = alert_tuple[7]
-    alert_json['severity'] = alert_tuple[8]
-    alert_json['sender'] = alert_tuple[9]
-    return alert_json
+    msg_json = {}
+    msg_json['datetime'] = msg_tuple[1]
+    msg_json['zipcode'] = msg_tuple[2]
+    msg_json['city'] = msg_tuple[3]
+    msg_json['state'] = msg_tuple[4]
+    msg_json['country'] = msg_tuple[5]
+    msg_json['type'] = msg_tuple[6]
+    msg_json['description'] = msg_tuple[7]
+    msg_json['severity'] = msg_tuple[8]
+    msg_json['sender'] = msg_tuple[9]
+    return msg_json

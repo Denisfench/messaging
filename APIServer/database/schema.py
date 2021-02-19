@@ -1,10 +1,10 @@
-from APIServer.database.models import Alert, Thread, Comment
+from APIServer.database.models import Message, Thread, Comment
 from marshmallow_sqlalchemy import ModelSchema
 
 
-class AlertSchema(ModelSchema):
+class MessageSchema(ModelSchema):
     class Meta:
-        model = Alert
+        model = Message
 
 
 class ThreadSchema(ModelSchema):

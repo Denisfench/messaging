@@ -1,5 +1,5 @@
-from APIServer.database.models import Alert, Thread
-from APIServer.database.schema import AlertSchema
+from APIServer.database.models import Message, Thread
+from APIServer.database.schema import MessageSchema
 from APIServer import db
 from APIServer.threads.operations import delete_thread
 
@@ -56,115 +56,115 @@ def query_params_to_list(query_string):
     return query_list
 
 
-def convert_name(alert):
-    alert_new = {"event_zipcode": alert['zipcode'],
-                 "event_city": alert['city'],
-                 "event_state": alert['state'],
-                 "event_country": alert['country'],
-                 "event_type": alert['type'],
-                 "event_description": alert['description'],
-                 "msg_sender": alert['sender'],
-                 "event_datetime": alert['datetime'],
-                 "event_severity": alert['severity']}
-    if alert.get('active'):
-        alert_new['active'] = alert['active']
-    return alert_new
+def convert_name(msg):
+    msg_new = {"event_zipcode": msg['zipcode'],
+                 "event_city": msg['city'],
+                 "event_state": msg['state'],
+                 "event_country": msg['country'],
+                 "event_type": msg['type'],
+                 "event_description": msg['description'],
+                 "msg_sender": msg['sender'],
+                 "event_datetime": msg['datetime'],
+                 "event_severity": msg['severity']}
+    if msg.get('active'):
+        msg_new['active'] = msg['active']
+    return msg_new
 
 
-def write_alert(alert):
+def write_message(msg):
     """
-    Add a new alert to database
+    Add a new message to database
     """
-    if ("event_zipcode" not in alert):
-        alert = convert_name(alert)
-    new_alert = Alert(event_zipcode=alert['event_zipcode'],
-                      event_city=alert['event_city'],
-                      event_state=alert['event_state'],
-                      event_country=alert['event_country'],
-                      event_type=alert['event_type'],
-                      event_description=alert['event_description'],
-                      msg_sender=alert['msg_sender'],
-                      event_datetime=alert['event_datetime'],
-                      event_severity=alert['event_severity'])
-    db.session.add(new_alert)
+    if ("event_zipcode" not in msg):
+        msg = convert_name(msg)
+    new_msg = Message(event_zipcode=msg['event_zipcode'],
+                      event_city=msg['event_city'],
+                      event_state=msg['event_state'],
+                      event_country=msg['event_country'],
+                      event_type=msg['event_type'],
+                      event_description=msg['event_description'],
+                      msg_sender=msg['msg_sender'],
+                      event_datetime=msg['event_datetime'],
+                      event_severity=msg['event_severity'])
+    db.session.add(new_msg)
     db.session.commit()
-    # add a new thread for the alert
-    new_thread = Thread(id=new_alert.id,
+    # add a new thread for the message
+    new_thread = Thread(id=new_msg.id,
                         first_comment_id=-1,
                         last_comment_id=-1)
     db.session.add(new_thread)
     db.session.commit()
-    return "Alert " + str(new_alert.id) + " inserted"
+    return "Message " + str(new_msg.id) + " inserted"
 
 
-def update_alert(alert, id):
-    fetched_alert = Alert.query.get(id)
-    if fetched_alert is None:
-        return {'message': 'Alert ' + str(id) + ' does not exist'}, 404
-    if ("event_zipcode" not in alert):
-        alert = convert_name(alert)
-    fetched_alert.event_zipcode = alert['event_zipcode']
-    fetched_alert.event_city = alert['event_city']
-    fetched_alert.event_state = alert['event_state']
-    fetched_alert.event_country = alert['event_country']
-    fetched_alert.event_type = alert['event_type']
-    fetched_alert.event_description = alert['event_description']
-    fetched_alert.msg_sender = alert['msg_sender']
-    fetched_alert.event_datetime = alert['event_datetime']
-    fetched_alert.event_severity = alert['event_severity']
-    if alert.get('active') and alert['active'] == 'Active':
-        fetched_alert.active = True
-    if alert.get('active') and alert['active'] == 'Not Active':
-        fetched_alert.active = False
+def update_message(msg, id):
+    fetched_msg = Message.query.get(id)
+    if fetched_msg is None:
+        return {'message': 'Message' + str(id) + ' does not exist'}, 404
+    if ("event_zipcode" not in msg):
+        msg = convert_name(msg)
+    fetched_msg.event_zipcode = msg['event_zipcode']
+    fetched_msg.event_city = msg['event_city']
+    fetched_msg.event_state = msg['event_state']
+    fetched_msg.event_country = msg['event_country']
+    fetched_msg.event_type = msg['event_type']
+    fetched_msg.event_description = msg['event_description']
+    fetched_msg.msg_sender = msg['msg_sender']
+    fetched_msg.event_datetime = msg['event_datetime']
+    fetched_msg.event_severity = msg['event_severity']
+    if msg.get('active') and msg['active'] == 'Active':
+        fetched_msg.active = True
+    if msg.get('active') and msg['active'] == 'Not Active':
+        fetched_msg.active = False
     db.session.commit()
-    return 'Alert ' + str(id) + ' updated'
+    return 'Message ' + str(id) + ' updated'
 
 
-def number_of_alerts():
+def number_of_messages():
     """
-    This will return the total number of alerts.
+    This will return the total number of messages.
     """
-    return db.session.query(Alert).count()
+    return db.session.query(Message).count()
 
 
-def newest_alert():
+def newest_message():
     """
-    This will return the latest alert.
+    This will return the latest message.
     """
-    a = db.session.query(Alert).order_by('event_datetime')[-1]
-    return a.event_datetime
+    m = db.session.query(Message).order_by('event_datetime')[-1]
+    return m.event_datetime
 
 
-def oldest_alert():
+def oldest_message():
     """
-    This will return the oldest alert.
+    This will return the oldest message.
     """
-    return db.session.query(Alert).first().event_datetime
+    return db.session.query(Message).first().event_datetime
 
 
-def read_alert(id):
-    fetched_alert = Alert.query.get(id)
-    alert_schema = AlertSchema()
-    alert_json = alert_schema.dump(fetched_alert)
-    return dic_lst_to_tuple_lst([alert_json])
+def read_message(id):
+    fetched_msg = Message.query.get(id)
+    msg_schema = MessageSchema()
+    msg_json = msg_schema.dump(fetched_msg)
+    return dic_lst_to_tuple_lst([msg_json])
 
 
-def delete_alert(id):
+def delete_message(id):
     """
-    delete an alert and associated thread from the database
+    delete a message and associated thread from the database
     """
-    alert = Alert.query.get(id)
-    if alert is None:
-        return {'message': 'Alert ' + str(id) + ' does not exist'}, 404
+    msg = Message.query.get(id)
+    if msg is None:
+        return {'message': 'Message ' + str(id) + ' does not exist'}, 404
     # delete associated thread
     delete_thread(id)
-    # delete alert
-    db.session.delete(alert)
+    # delete message
+    db.session.delete(msg)
     db.session.commit()
-    return 'Alert ' + str(id) + ' deleted'
+    return 'Message ' + str(id) + ' deleted'
 
 
-def read_filtered_alerts(query_params):
+def read_filtered_messages(query_params):
     severity_value = query_params.get('severity')
     date_value = query_params.get('date')
     type_value = query_params.get('type')
@@ -173,17 +173,17 @@ def read_filtered_alerts(query_params):
     limit = query_params.get('limit', DEFAULT_LIMIT)
     offset = query_params.get('offset', DEFAULT_OFFSET)
     active = query_params.get('active')
-    alerts = None
+    msgs = None
 
     if region_value:
         required_regions = query_params_to_list(region_value)
         # print(required_regions)
-        if alerts:
-            alerts = Alert.query.filter(
-                Alert.event_state.in_(required_regions))
+        if msgs:
+            msgs = Message.query.filter(
+                Message.event_state.in_(required_regions))
         else:
-            alerts = Alert.query.filter(
-                Alert.event_state.in_(required_regions))
+            msgs = Message.query.filter(
+                Message.event_state.in_(required_regions))
 
     if active:
         active = active.strip()
@@ -192,70 +192,70 @@ def read_filtered_alerts(query_params):
         non_type = None
         if active == 'n':
             active_bool = False
-        if alerts:
+        if msgs:
             if active_bool is True:
-                alerts = alerts.filter(Alert.active == active_bool)
+                msgs = msgs.filter(Message.active == active_bool)
             else:
-                alerts = alerts.filter(
-                    (Alert.active == active_bool)
-                    | (Alert.active == non_type))
+                msgs = msgs.filter(
+                    (Message.active == active_bool)
+                    | (Message.active == non_type))
         else:
             if active_bool is True:
-                alerts = Alert.query.filter(Alert.active == active_bool)
+                msgs = Message.query.filter(Message.active == active_bool)
             else:
-                alerts = Alert.query.filter(
-                    (Alert.active == active_bool)
-                    | (Alert.active == non_type))
+                msgs = Message.query.filter(
+                    (Message.active == active_bool)
+                    | (Message.active == non_type))
 
     if severity_value:
         required_severity = query_params_to_list(severity_value)
         # print(required_severity)
-        if alerts:
-            alerts = alerts.filter(Alert.event_severity.in_(required_severity))
+        if msgs:
+            msgs = msgs.filter(Message.event_severity.in_(required_severity))
         else:
-            alerts = Alert.query.filter(
-                Alert.event_severity.in_(required_severity))
+            msgs = Message.query.filter(
+                Message.event_severity.in_(required_severity))
 
     if date_value:
         # parse date input in any format (MM-DD-YYY, DD-MM-YYYY, MM/DD/YYYY...)
         required_datetime = parse(date_value, fuzzy=True)
         # print(required_datetime)
-        if alerts:
-            alerts = alerts.filter(
-                Alert.event_datetime >= required_datetime)
+        if msgs:
+            msgs = msgs.filter(
+                Message.event_datetime >= required_datetime)
         else:
-            alerts = Alert.query.filter(
-                Alert.event_datetime >= required_datetime)
+            msgs = Message.query.filter(
+                Message.event_datetime >= required_datetime)
 
     if type_value:
         required_type = query_params_to_list(type_value)
         # print(required_type)
-        if alerts:
-            alerts = alerts.filter(
-                Alert.event_type.in_(required_type))
+        if msgs:
+            msgs = msgs.filter(
+                Message.event_type.in_(required_type))
         else:
-            alerts = Alert.query.filter(
-                Alert.event_type.in_(required_type))
+            msgs = Message.query.filter(
+                Message.event_type.in_(required_type))
 
     if country_value:
         required_country = query_params_to_list(country_value)
         # print(required_country)
-        if alerts:
-            alerts = alerts.filter(
-                Alert.event_country.in_(required_country))
+        if msgs:
+            msgs = msgs.filter(
+                Message.event_country.in_(required_country))
         else:
-            alerts = Alert.query.filter(
-                Alert.event_country.in_(required_country))
-    if alerts:
-        alerts = alerts.order_by(Alert.event_datetime.desc()) \
+            msgs = Message.query.filter(
+                Message.event_country.in_(required_country))
+    if msgs:
+        msgs = msgs.order_by(Message.event_datetime.desc()) \
                        .offset(offset).limit(limit)
     else:
-        alerts = Alert.query.order_by(Alert.event_datetime.desc()) \
+        msgs = Message.query.order_by(Message.event_datetime.desc()) \
                       .offset(offset).limit(limit)
 
-    # alerts = alerts.all()
-    # print(alerts)
-    alert_schema = AlertSchema(many=True)
-    alerts_json = alert_schema.dump(alerts)
-    # print(dic_lst_to_tuple_lst(alerts_json))
-    return dic_lst_to_tuple_lst(alerts_json)
+    # msgs = msgs.all()
+    # print(msgs)
+    msg_schema = MessageSchema(many=True)
+    msgs_json = msg_schema.dump(msgs)
+    # print(dic_lst_to_tuple_lst(msgs_json))
+    return dic_lst_to_tuple_lst(msgs_json)
