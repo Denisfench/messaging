@@ -28,8 +28,8 @@
                 }
             }
         },
-        "severity": {
-            "name": "severity",
+        "priority": {
+            "name": "priority",
             "type": "dropdown",
             "placeholder": "E.g. High",
             "optionList": {

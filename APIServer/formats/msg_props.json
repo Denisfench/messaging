@@ -34,14 +34,14 @@
     "question": "What is the emergency?",
     "atype": "string"
   },
-  "event_severity": {
+  "event_priority": {
     "question ID": 7,
     "question": "How severe is the emergency?",
     "atype": "string"
   },
   "msg_sender": {
     "question ID": 8,
-    "question": "Who is sending the alert?",
+    "question": "Who is sending the message?",
     "atype": "string"
   }
 }

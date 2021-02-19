@@ -1,5 +1,5 @@
 {
-    "required": ["datetime", "zipcode", "city", "state", "country", "type", "severity", "sender"],
+    "required": ["datetime", "zipcode", "city", "state", "country", "type", "priority", "sender"],
     "properties": {
         "datetime": {
             "required": true,
@@ -39,7 +39,7 @@
             "description": "What is the emergency?",
             "example": "Smoke in the building"
         },
-        "severity": {
+        "priority": {
             "required": true,
             "type": "string",
             "values": ["High", "Medium", "Low"],
@@ -49,7 +49,7 @@
         "sender": {
             "required": true,
             "type": "string",
-            "description": "Who is sending the alert?",
+            "description": "Who is sending the message?",
             "example": "Socnet API Server"
         }
     }
