@@ -17,6 +17,6 @@ def create_message_json(msg_tuple):
     msg_json['country'] = msg_tuple[5]
     msg_json['type'] = msg_tuple[6]
     msg_json['description'] = msg_tuple[7]
-    msg_json['severity'] = msg_tuple[8]
+    msg_json['priority'] = msg_tuple[8]
     msg_json['sender'] = msg_tuple[9]
     return msg_json

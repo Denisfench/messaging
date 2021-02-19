@@ -43,7 +43,7 @@ def dic_lst_to_tuple_lst(obj):
                dic["event_country"],
                dic["event_type"],
                dic["event_description"],
-               dic["event_severity"],
+               dic["event_priority"],
                dic["msg_sender"],
                active_repr)
         final_lst.append(tup)
@@ -65,7 +65,7 @@ def convert_name(msg):
                  "event_description": msg['description'],
                  "msg_sender": msg['sender'],
                  "event_datetime": msg['datetime'],
-                 "event_severity": msg['severity']}
+                 "event_priority": msg['priority']}
     if msg.get('active'):
         msg_new['active'] = msg['active']
     return msg_new
@@ -85,7 +85,7 @@ def write_message(msg):
                       event_description=msg['event_description'],
                       msg_sender=msg['msg_sender'],
                       event_datetime=msg['event_datetime'],
-                      event_severity=msg['event_severity'])
+                      event_priority=msg['event_priority'])
     db.session.add(new_msg)
     db.session.commit()
     # add a new thread for the message
@@ -111,7 +111,7 @@ def update_message(msg, id):
     fetched_msg.event_description = msg['event_description']
     fetched_msg.msg_sender = msg['msg_sender']
     fetched_msg.event_datetime = msg['event_datetime']
-    fetched_msg.event_severity = msg['event_severity']
+    fetched_msg.event_priority = msg['event_priority']
     if msg.get('active') and msg['active'] == 'Active':
         fetched_msg.active = True
     if msg.get('active') and msg['active'] == 'Not Active':
@@ -165,7 +165,7 @@ def delete_message(id):
 
 
 def read_filtered_messages(query_params):
-    severity_value = query_params.get('severity')
+    priority_value = query_params.get('priority')
     date_value = query_params.get('date')
     type_value = query_params.get('type')
     region_value = query_params.get('region')
@@ -207,14 +207,14 @@ def read_filtered_messages(query_params):
                     (Message.active == active_bool)
                     | (Message.active == non_type))
 
-    if severity_value:
-        required_severity = query_params_to_list(severity_value)
-        # print(required_severity)
+    if priority_value:
+        required_priority = query_params_to_list(priority_value)
+        # print(required_priority)
         if msgs:
-            msgs = msgs.filter(Message.event_severity.in_(required_severity))
+            msgs = msgs.filter(Message.event_priority.in_(required_priority))
         else:
             msgs = Message.query.filter(
-                Message.event_severity.in_(required_severity))
+                Message.event_priority.in_(required_priority))
 
     if date_value:
         # parse date input in any format (MM-DD-YYY, DD-MM-YYYY, MM/DD/YYYY...)
