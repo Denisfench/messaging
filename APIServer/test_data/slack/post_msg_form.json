@@ -1,9 +1,9 @@
 {
 	"type": "modal",
-	"callback_id": "post_alert",
+	"callback_id": "post_msg",
 	"title": {
 		"type": "plain_text",
-		"text": "SOC-NET: Post an Alert"
+		"text": "SOC-NET: Post an Msg"
 	},
 	"submit": {
 		"type": "plain_text",
@@ -49,10 +49,10 @@
 			"type": "input",
 			"element": {
 				"type": "static_select",
-				"action_id": "severity",
+				"action_id": "priority",
 				"placeholder": {
 					"type": "plain_text",
-					"text": "Please select event severity"
+					"text": "Please select event priority"
 				},
 				"options": [
 					{
@@ -80,7 +80,7 @@
 			},
 			"label": {
 				"type": "plain_text",
-				"text": "Severity"
+				"text": "Priority"
 			}
 		},
 		{
