@@ -1,11 +1,11 @@
 {
 	"type": "view_submission",
 	"view": {
-		"callback_id": "update_alert",
+		"callback_id": "update_msg",
 		"state": {
 			"values": {
 				"olwo": {
-					"alert_id": {
+					"msg_id": {
 						"type": "plain_text_input",
 						"value": "1"
 					}
@@ -21,7 +21,7 @@
 					}
 				},
 				"dFn=": {
-					"severity": {
+					"priority": {
 						"type": "static_select"
 					}
 				},
