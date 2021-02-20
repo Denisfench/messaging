@@ -102,7 +102,7 @@
 			"block_id": "80ET",
 			"text": {
 				"type": "mrkdwn",
-				"text": "Go to Socnet to view this alert and its thread",
+				"text": "Go to Socnet to view this msg and its thread",
 				"verbatim": false
 			},
 			"accessory": {
@@ -143,7 +143,7 @@
 			"block_id": "eX1",
 			"text": {
 				"type": "mrkdwn",
-				"text": "Go to Socnet to view this alert and its thread",
+				"text": "Go to Socnet to view this msg and its thread",
 				"verbatim": false
 			},
 			"accessory": {
@@ -184,7 +184,7 @@
 			"block_id": "SDb",
 			"text": {
 				"type": "mrkdwn",
-				"text": "Go to Socnet to view this alert and its thread",
+				"text": "Go to Socnet to view this msg and its thread",
 				"verbatim": false
 			},
 			"accessory": {
@@ -225,7 +225,7 @@
 			"block_id": "C+r",
 			"text": {
 				"type": "mrkdwn",
-				"text": "Go to Socnet to view this alert and its thread",
+				"text": "Go to Socnet to view this msg and its thread",
 				"verbatim": false
 			},
 			"accessory": {
@@ -266,7 +266,7 @@
 			"block_id": "V\\/3gG",
 			"text": {
 				"type": "mrkdwn",
-				"text": "Go to Socnet to view this alert and its thread",
+				"text": "Go to Socnet to view this msg and its thread",
 				"verbatim": false
 			},
 			"accessory": {
@@ -307,7 +307,7 @@
 			"block_id": "ZP7",
 			"text": {
 				"type": "mrkdwn",
-				"text": "Go to Socnet to view this alert and its thread",
+				"text": "Go to Socnet to view this msg and its thread",
 				"verbatim": false
 			},
 			"accessory": {
@@ -348,7 +348,7 @@
 			"block_id": "8Wh",
 			"text": {
 				"type": "mrkdwn",
-				"text": "Go to Socnet to view this alert and its thread",
+				"text": "Go to Socnet to view this msg and its thread",
 				"verbatim": false
 			},
 			"accessory": {
@@ -389,7 +389,7 @@
 			"block_id": "cTppA",
 			"text": {
 				"type": "mrkdwn",
-				"text": "Go to Socnet to view this alert and its thread",
+				"text": "Go to Socnet to view this msg and its thread",
 				"verbatim": false
 			},
 			"accessory": {
@@ -430,7 +430,7 @@
 			"block_id": "KZ5rN",
 			"text": {
 				"type": "mrkdwn",
-				"text": "Go to Socnet to view this alert and its thread",
+				"text": "Go to Socnet to view this msg and its thread",
 				"verbatim": false
 			},
 			"accessory": {
@@ -481,7 +481,7 @@
 		},
 		"title": {
 			"type": "plain_text",
-			"text": "SOC-NET: Filter Alerts",
+			"text": "SOC-NET: Filter Msgs",
 			"emoji": true
 		},
 		"clear_on_close": false,
