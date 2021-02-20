@@ -12,7 +12,7 @@
 			"block_id": "elTS",
 			"text": {
 				"type": "mrkdwn",
-				"text": "Showing page 1 (max 10 alerts per page)",
+				"text": "Showing page 1 (max 10 msgs per page)",
 				"verbatim": false
 			}
 		}, {
@@ -61,7 +61,7 @@
 			"block_id": "I2X",
 			"text": {
 				"type": "mrkdwn",
-				"text": "Go to Socnet to view this alert and its thread",
+				"text": "Go to Socnet to view this msg and its thread",
 				"verbatim": false
 			},
 			"accessory": {
@@ -458,7 +458,7 @@
 					}
 				},
 				"K9q": {
-					"severity": {
+					"priority": {
 						"type": "plain_text_input"
 					}
 				},
