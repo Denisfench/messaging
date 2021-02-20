@@ -1,7 +1,7 @@
 {
 	"type": "view_submission",
 	"view": {
-		"callback_id": "filter_alerts",
+		"callback_id": "filter_msgs",
 		"state": {
 			"values": {
 				"6pu5j": {
@@ -11,7 +11,7 @@
 					}
 				},
 				"YS2BV": {
-					"severity": {
+					"priority": {
 						"type": "plain_text_input",
 						"value": "Low"
 					}
