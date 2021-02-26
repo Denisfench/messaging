@@ -2,7 +2,7 @@
 	"host": "0.0.0.0",
 	"port": 8000,
 	"debug": true,
-	"alert_format_path": "APIServer/formats/msg_format.json",
+	"msg_format_path": "APIServer/formats/msg_format.json",
 	"format_path": "APIServer/formats/msg.json",
 	"format_dict": "APIServer/formats/msg_type_dict.json",
 	"database_path": "APIServer/db_temp",
