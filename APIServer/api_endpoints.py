@@ -11,7 +11,7 @@ from APIServer.msgs.operations import write_msg
 from APIServer.msgs.operations import read_msg
 from APIServer.msgs.operations import update_msg
 from APIServer.msgs.operations import delete_msg
-from APIServer.msgs.operations import number_of_msg
+from APIServer.msgs.operations import number_of_msgs
 from APIServer.msgs.operations import newest_msg
 from APIServer.msgs.operations import oldest_msg
 
