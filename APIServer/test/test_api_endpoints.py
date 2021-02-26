@@ -8,7 +8,7 @@ import responses
 from APIServer import db
 
 import APIServer.api_endpoints
-from APIServer.api_endpoints import app, HelloWorld, MessageFormat, AlertsLists
+from APIServer.api_endpoints import app, HelloWorld, MessageFormat, MsgsLists
 from APIServer.commons.api_utils import err_return, read_json
 
 test_config_path = 'APIServer/test_data/test_config.json'
@@ -35,7 +35,7 @@ class Test(TestCase):
         # none of the object's members names should have caps!
         self.messageformat = MessageFormat(Resource)
         self.HelloWorld = HelloWorld(Resource)
-        self.alerts = AlertsLists(Resource)
+        self.msgs = MsgsLists(Resource)
         with app.app_context():
             db.create_all()
 
@@ -85,113 +85,113 @@ class Test(TestCase):
                 for method in endpoints[ep]:
                     self.assertEqual(type(endpoints[ep][method]), str)
 
-    def test_alerts(self):
+    def test_msgs(self):
         """
-        Testing if the alerts module works
+        Testing if the msgs module works
         """
         with app.test_client() as c:
-            rv = c.get('/alerts')
+            rv = c.get('/msgs')
             self.assertEqual(eval(rv.data.decode('utf-8')[:-1]), [])
 
-            # Should not be able to update or delete alert before inserting
-            rv = c.put('/alerts/1', json=test_update)
+            # Should not be able to update or delete msg before inserting
+            rv = c.put('/msgs/1', json=test_update)
             self.assertEqual(rv.status_code, 404)
 
-            rv = c.delete('/alerts/1')
+            rv = c.delete('/msgs/1')
             self.assertEqual(rv.status_code, 404)
 
-            rv = c.post('/alerts', json=test_json)
+            rv = c.post('/msgs', json=test_json)
             self.assertEqual(rv.status_code, 200)
 
-            rv = c.get('/alerts/1')
+            rv = c.get('/msgs/1')
             self.assertEqual(eval(rv.data.decode('utf-8')[:-1]), test_response)
 
-            rv = c.get('/alerts')
+            rv = c.get('/msgs')
             self.assertEqual(eval(rv.data.decode('utf-8')[:-1]),
                              test_response)
 
-            rv = c.put('/alerts/1', json=test_update)
+            rv = c.put('/msgs/1', json=test_update)
             self.assertEqual(rv.status_code, 200)
 
-            rv = c.get('/alerts/1')
+            rv = c.get('/msgs/1')
             self.assertEqual(eval(rv.data.decode('utf-8')[:-1]),
                              test_update_response)
 
-            rv = c.get('/alerts')
+            rv = c.get('/msgs')
             self.assertEqual(eval(rv.data.decode('utf-8')[:-1]),
                              test_update_response)
 
-            rv = c.delete('/alerts/1')
+            rv = c.delete('/msgs/1')
             self.assertEqual(rv.status_code, 200)
 
-            rv = c.get('/alerts')
+            rv = c.get('/msgs')
             self.assertEqual(eval(rv.data.decode('utf-8')[:-1]), [])
 
-            rv = c.put('/alerts/1', json=test_update)
+            rv = c.put('/msgs/1', json=test_update)
             self.assertEqual(rv.status_code, 404)
 
-            rv = c.delete('/alerts/1')
+            rv = c.delete('/msgs/1')
             self.assertEqual(rv.status_code, 404)
 
-    def test_alert_filtering(self):
+    def test_msg_filtering(self):
         """
-        Testing if alerts filtering works
+        Testing if msgs filtering works
         """
         with app.test_client() as c:
-            rv = c.get('/alerts')
+            rv = c.get('/msgs')
             self.assertEqual(eval(rv.data.decode('utf-8')[:-1]), [])
 
-            rv = c.post('/alerts', json=test_json)
+            rv = c.post('/msgs', json=test_json)
             self.assertEqual(rv.status_code, 200)
 
-            rv = c.get('/alerts?region=New York')
+            rv = c.get('/msgs?region=New York')
             self.assertEqual(eval(rv.data.decode('utf-8')[:-1]), test_response)
 
-            rv = c.get('/alerts?region=New Jersey')
+            rv = c.get('/msgs?region=New Jersey')
             self.assertEqual(eval(rv.data.decode('utf-8')[:-1]), [])
 
-            rv = c.get('/alerts?severity=Low')
+            rv = c.get('/msgs?priority=Low')
             self.assertEqual(eval(rv.data.decode('utf-8')[:-1]), test_response)
 
-            rv = c.get('/alerts?severity=High')
+            rv = c.get('/msgs?priority=High')
             self.assertEqual(eval(rv.data.decode('utf-8')[:-1]), [])
 
-            rv = c.get('/alerts?type=Fire')
+            rv = c.get('/msgs?type=Fire')
             self.assertEqual(eval(rv.data.decode('utf-8')[:-1]), test_response)
 
-            rv = c.get('/alerts?type=Smoke')
+            rv = c.get('/msgs?type=Smoke')
             self.assertEqual(eval(rv.data.decode('utf-8')[:-1]), [])
 
-            rv = c.get('/alerts?date=2019-01-01')
+            rv = c.get('/msgs?date=2019-01-01')
             self.assertEqual(eval(rv.data.decode('utf-8')[:-1]), test_response)
 
-            rv = c.get('/alerts?date=2022-01-01')
+            rv = c.get('/msgs?date=2022-01-01')
             self.assertEqual(eval(rv.data.decode('utf-8')[:-1]), [])
 
-            rv = c.get('/alerts?country=USA')
+            rv = c.get('/msgs?country=USA')
             self.assertEqual(eval(rv.data.decode('utf-8')[:-1]), test_response)
 
-            rv = c.get('/alerts?country=Canada')
+            rv = c.get('/msgs?country=Canada')
             self.assertEqual(eval(rv.data.decode('utf-8')[:-1]), [])
 
-            rv = c.get('/alerts?active=y')
+            rv = c.get('/msgs?active=y')
             self.assertEqual(eval(rv.data.decode('utf-8')[:-1]), test_response)
 
-            rv = c.get('/alerts?active=n')
+            rv = c.get('/msgs?active=n')
             self.assertEqual(eval(rv.data.decode('utf-8')[:-1]), [])
 
-            rv = c.get('/alerts?region=\
-                New York&severity=Low&type=Fire&country=USA&date=2019-01-01')
+            rv = c.get('/msgs?region=\
+                New York&priority=Low&type=Fire&country=USA&date=2019-01-01')
             self.assertEqual(eval(rv.data.decode('utf-8')[:-1]), test_response)
 
-            rv = c.put('/alerts/1', json=test_update)
+            rv = c.put('/msgs/1', json=test_update)
             self.assertEqual(rv.status_code, 200)
 
-            rv = c.get('/alerts?active=n')
+            rv = c.get('/msgs?active=n')
             self.assertEqual(eval(rv.data.decode('utf-8')[:-1]),
                              test_update_response)
 
-            rv = c.get('/alerts?active=y')
+            rv = c.get('/msgs?active=y')
             self.assertEqual(eval(rv.data.decode('utf-8')[:-1]), [])
 
     def test_threads(self):
@@ -200,8 +200,8 @@ class Test(TestCase):
         """
         with app.test_client() as c:
 
-            rv = c.post('/alerts', json=test_json)
-            rv = c.post('/alerts', json=test_json)
+            rv = c.post('/msgs', json=test_json)
+            rv = c.post('/msgs', json=test_json)
 
             rv = c.put('/threads/1', json={'text': 'some comment'})
             self.assertEqual(rv.status_code, 200)
@@ -227,10 +227,10 @@ class Test(TestCase):
                               {"3": "new comment"},
                               {"4": "3rd comment"}])
 
-            rv = c.delete('/alerts/1')
+            rv = c.delete('/msgs/1')
 
-            # The thread associated with the alert
-            # should be deleted after the alert is deleted
+            # The thread associated with the msg
+            # should be deleted after the msg is deleted
             rv = c.get('/threads/1')
             self.assertEqual(rv.status_code, 404)
 
@@ -240,10 +240,10 @@ class Test(TestCase):
                               {"5": "comment yy"},
                               {"6": "comment zzz"}])
 
-            rv = c.delete('/alerts/2')
+            rv = c.delete('/msgs/2')
 
-            # The thread associated with the alert
-            # should be deleted after the alert is deleted
+            # The thread associated with the msg
+            # should be deleted after the msg is deleted
             rv = c.get('/threads/2')
             self.assertEqual(rv.status_code, 404)
 
@@ -298,77 +298,77 @@ class Test(TestCase):
             rv = c.post('/slack/submit')
             self.assertEqual(rv.status_code, 200)
 
-            # check if /slack/post_alert works (it opens a form in Slack)
-            rv = c.post('/slack/post_alert',
+            # check if /slack/post_msg works (it opens a form in Slack)
+            rv = c.post('/slack/post_msg',
                         data=dict(trigger_id='my_trigger_id',
                                   channel_id='my_channel'))
             self.assertEqual(rv.status_code, 200)
 
-            # check if we can post an alert through /slack/submit
+            # check if we can post an msg through /slack/submit
             POST_PAYLOAD_PATH = APIServer.api_endpoints.config[
                 'slack_post_payload']
-            post_alert_payload = read_json(POST_PAYLOAD_PATH)
+            post_msg_payload = read_json(POST_PAYLOAD_PATH)
             rv = c.post('/slack/submit', data=dict(
-                payload=json.dumps(post_alert_payload)))
+                payload=json.dumps(post_msg_payload)))
             self.assertEqual(rv.status_code, 200)
 
-            # check if the previous alert was successfully posted
-            rv = c.get('alerts/1')
+            # check if the previous msg was successfully posted
+            rv = c.get('msgs/1')
             self.assertEqual(len(eval(rv.data.decode('utf-8')[:-1])), 1)
-            alert = eval(rv.data.decode('utf-8')[:-1])
-            alert[0][1] = test_response[0][1]  # ignore time
-            self.assertEqual(test_response, alert)
+            msg = eval(rv.data.decode('utf-8')[:-1])
+            msg[0][1] = test_response[0][1]  # ignore time
+            self.assertEqual(test_response, msg)
 
-            # check if /slack/get_alert works
-            rv = c.post('/slack/get_alert',
+            # check if /slack/get_msg works
+            rv = c.post('/slack/get_msg',
                         data=dict(text='1', channel_id='my_channel'))
             self.assertEqual(rv.status_code, 200)
 
             # try to use /slack/submit to get filtered results
             FILTER_PAYLOAD_PATH = APIServer.api_endpoints.config[
-                'slack_filter_alerts_payload']
-            filter_alerts_payload = read_json(FILTER_PAYLOAD_PATH)
+                'slack_filter_msgs_payload']
+            filter_msgs_payload = read_json(FILTER_PAYLOAD_PATH)
             rv = c.post('/slack/submit',
-                        data=dict(payload=json.dumps(filter_alerts_payload)))
+                        data=dict(payload=json.dumps(filter_msgs_payload)))
             self.assertEqual(rv.status_code, 200)
 
-            # check if /slack/update_alert works (it opens a form in Slack)
-            rv = c.post('/slack/update_alert',
+            # check if /slack/update_msg works (it opens a form in Slack)
+            rv = c.post('/slack/update_msg',
                         data=dict(trigger_id='my_trigger_id',
                                   channel_id='my_channel'))
             self.assertEqual(rv.status_code, 200)
 
-            # check if we can update an alert through /slack/submit
+            # check if we can update an msg through /slack/submit
             UPDATE_PAYLOAD_PATH = APIServer.api_endpoints.config[
                 'slack_update_payload']
-            update_alert_payload = read_json(UPDATE_PAYLOAD_PATH)
+            update_msg_payload = read_json(UPDATE_PAYLOAD_PATH)
             rv = c.post('/slack/submit',
-                        data=dict(payload=json.dumps(update_alert_payload)))
-            new_alert = eval(
-                c.get('alerts/1').data.decode('utf-8')[:-1])
+                        data=dict(payload=json.dumps(update_msg_payload)))
+            new_msg = eval(
+                c.get('msgs/1').data.decode('utf-8')[:-1])
             self.assertEqual(rv.status_code, 200)
-            self.assertEqual('10003', new_alert[0][2])
-            self.assertEqual('Slack', new_alert[0][9])
-            self.assertEqual('Not Active', new_alert[0][10])
+            self.assertEqual('10003', new_msg[0][2])
+            self.assertEqual('Slack', new_msg[0][9])
+            self.assertEqual('Not Active', new_msg[0][10])
 
-            # try to use /slack/submit to update an alert that does not exist
+            # try to use /slack/submit to update an msg that does not exist
             UPDATE_PAYLOAD_PATH = APIServer.api_endpoints.config[
                 'slack_update_payload_invalid']
-            update_alert_payload = read_json(UPDATE_PAYLOAD_PATH)
+            update_msg_payload = read_json(UPDATE_PAYLOAD_PATH)
             rv = c.post('/slack/submit',
-                        data=dict(payload=json.dumps(update_alert_payload)))
+                        data=dict(payload=json.dumps(update_msg_payload)))
             self.assertEqual(rv.status_code, 200)
 
-            # check if /slack/delete_alert works
-            rv = c.post('/slack/delete_alert', data=dict(text='1'))
+            # check if /slack/delete_msg works
+            rv = c.post('/slack/delete_msg', data=dict(text='1'))
             self.assertEqual(rv.status_code, 200)
 
-            # check if the previous alert was successfully deleted
-            rv = c.get('alerts/1')
+            # check if the previous msg was successfully deleted
+            rv = c.get('msgs/1')
             self.assertEqual(len(eval(rv.data.decode('utf-8')[:-1])), 0)
 
-            # check if /slack/filter_alerts works (it opens a form in Slack)
-            rv = c.post('/slack/filter_alerts',
+            # check if /slack/filter_msgs works (it opens a form in Slack)
+            rv = c.post('/slack/filter_msgs',
                         data=dict(trigger_id='my_trigger_id',
                                   channel_id='my_channel'))
             self.assertEqual(rv.status_code, 200)
