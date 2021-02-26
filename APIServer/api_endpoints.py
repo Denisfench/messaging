@@ -2,18 +2,18 @@
 from flask import request
 from APIServer import create_app
 from flask_restplus import Resource, Api, fields
-from APIServer.commons.form_api import get_alert_form
+from APIServer.commons.form_api import get_msg_form
 from APIServer.commons.api_utils import read_json
 from APIServer.commons.endpoint_api import get_endpoints
 
-from APIServer.alerts.operations import read_filtered_alerts
-from APIServer.alerts.operations import write_alert
-from APIServer.alerts.operations import read_alert
-from APIServer.alerts.operations import update_alert
-from APIServer.alerts.operations import delete_alert
-from APIServer.alerts.operations import number_of_alerts
-from APIServer.alerts.operations import newest_alert
-from APIServer.alerts.operations import oldest_alert
+from APIServer.msgs.operations import read_filtered_msgs
+from APIServer.msgs.operations import write_msg
+from APIServer.msgs.operations import read_msg
+from APIServer.msgs.operations import update_msg
+from APIServer.msgs.operations import delete_msg
+from APIServer.msgs.operations import number_of_msg
+from APIServer.msgs.operations import newest_msg
+from APIServer.msgs.operations import oldest_msg
 
 from APIServer.threads.operations import get_comments
 from APIServer.threads.operations import add_comment
@@ -21,7 +21,7 @@ from APIServer.threads.operations import add_comment
 from APIServer.slack.push import send_slack_log
 from APIServer.slack.push import send_json_to_slack_channel
 from APIServer.slack.push import open_form
-from APIServer.slack.format import slack_format_alert
+from APIServer.slack.format import slack_format_msg
 from APIServer.slack.operations import handle_interaction
 
 from APIServer.mattermost.push import push_to_mattermost
@@ -66,13 +66,13 @@ class Endpoints(Resource):
         return get_endpoints(api, app)
 
 
-@api.route('/alert_format')
-class AlertFormat(Resource):
+@api.route('/msg_format')
+class MsgFormat(Resource):
     def get(self):
         """
-        Get the format of an alert
+        Get the format of an msg
         """
-        return get_alert_form(config['alert_format_path'])
+        return get_msg_form(config['msg_format_path'])
 
 
 @api.route('/filters')
@@ -81,57 +81,57 @@ class FilterValues(Resource):
         """
         Get the values to populate the filter form
         """
-        return get_alert_form(config['filter_form_values_path'])
+        return get_msg_form(config['filter_form_values_path'])
 
 
 @api.route('/form')
 class MessageFormat(Resource):
     def get(self):
         """
-        Get the format of an alert
+        Get the format of an msg
         """
-        return get_alert_form(config['format_path'])
+        return get_msg_form(config['format_path'])
 
 
-alert = api.schema_model('Alert',
-                         get_alert_form(config['format_path']))
+msg = api.schema_model('Msg',
+                         get_msg_form(config['format_path']))
 
 
-@api.route('/number_of_alerts')
-class TotalAlerts(Resource):
+@api.route('/number_of_msgs')
+class TotalMsgs(Resource):
     def get(self):
         """
-        Get the total number of alerts
+        Get the total number of msgs
         """
-        return {'number_of_alerts': number_of_alerts()}
+        return {'number_of_msgs': number_of_msgs()}
 
 
-@api.route('/newest_alert')
-class NewestAlert(Resource):
+@api.route('/newest_msg')
+class NewestMsg(Resource):
     def get(self):
         """
-        Return the date and time for the latest alert
+        Return the date and time for the latest msg
         """
-        return {"newest_alert": newest_alert()}
+        return {"newest_msg": newest_msg()}
 
 
-@api.route('/oldest_alert')
-class OldestAlert(Resource):
+@api.route('/oldest_msg')
+class OldestMsg(Resource):
     def get(self):
         """
-        Return the date and time for the oldest alert
+        Return the date and time for the oldest msg
         """
-        return {"oldest_alert": oldest_alert()}
+        return {"oldest_msg": oldest_msg()}
 
 
-@api.route('/alerts')
-class AlertsLists(Resource):
-    @api.doc(params={'severity': 'Filter alerts by severity'})
-    @api.doc(params={'date': 'Filter alerts by date'})
-    @api.doc(params={'type': 'Filter alerts by type'})
-    @api.doc(params={'region': 'Filter alerts by region'})
-    @api.doc(params={'country': 'Filter alerts by country'})
-    @api.doc(params={'active': 'Filter alerts by active status. \
+@api.route('/msgs')
+class MsgsLists(Resource):
+    @api.doc(params={'priority': 'Filter msgs by priority'})
+    @api.doc(params={'date': 'Filter msgs by date'})
+    @api.doc(params={'type': 'Filter msgs by type'})
+    @api.doc(params={'region': 'Filter msgs by region'})
+    @api.doc(params={'country': 'Filter msgs by country'})
+    @api.doc(params={'active': 'Filter msgs by active status. \
         Enter y or n'})
     @api.doc(params={'limit': 'Pagination parameter. \
         Indicate the max number of results returned. \
@@ -141,46 +141,46 @@ class AlertsLists(Resource):
         If not provided, the default value will be set to 0.'})
     def get(self):
         """
-        Get multiple (filtered) alerts based on the query parameters
+        Get multiple (filtered) msgs based on the query parameters
         """
-        return read_filtered_alerts(request.args)
+        return read_filtered_msgs(request.args)
 
-    @api.expect(alert)
+    @api.expect(msg)
     def post(self):
         """
-        Put a new alert into the system
+        Put a new msg into the system
         """
-        return write_alert(request.json)
+        return write_msg(request.json)
 
 
-@api.route('/alerts/<int:id>')
-@api.doc(params={'id': 'An Alert id number'})
-class Alerts(Resource):
+@api.route('/msgs/<int:id>')
+@api.doc(params={'id': 'An Msg id number'})
+class Msgs(Resource):
     def get(self, id):
         """
-        Get a specific alert with the given alert id
+        Get a specific msg with the given msg id
         """
-        return read_alert(id)
+        return read_msg(id)
 
-    @api.expect(alert)
+    @api.expect(msg)
     def put(self, id):
         """
-        Update an alert in the system with the given alert id
+        Update an msg in the system with the given msg id
         """
-        return update_alert(request.json, id)
+        return update_msg(request.json, id)
 
     def delete(self, id):
         """
-        Delete an alert in the system with the given alert id
+        Delete an msg in the system with the given msg id
         """
-        return delete_alert(id)
+        return delete_msg(id)
 
 
 comment = api.model('Comment', {'text': fields.String})
 
 
 @api.route('/threads/<int:id>')
-@api.doc(params={'id': 'An Alert id number'})
+@api.doc(params={'id': 'An Msg id number'})
 class Threads(Resource):
     def get(self, id):
         """
@@ -196,13 +196,13 @@ class Threads(Resource):
         return add_comment(request.json, id)
 
 
-@api.route('/slack/post_alert')
-class SlackPostAlert(Resource):
+@api.route('/slack/post_msg')
+class SlackPostMsg(Resource):
     def post(self):
         """
-        Post a new alert into the system through a Slack message
+        Post a new msg into the system through a Slack message
         """
-        send_slack_log('Entered /slack/post_alert')
+        send_slack_log('Entered /slack/post_msg')
         send_slack_log('Request info:')
         send_slack_log(str(request.form))
         trigger_id = request.form['trigger_id']
@@ -212,39 +212,39 @@ class SlackPostAlert(Resource):
                              config['slack_post_form_path'])
         send_slack_log('Response info:')
         send_slack_log(str(response))
-        return 'Please enter the new alert information in the form'
+        return 'Please enter the new msg information in the form'
 
 
-@api.route('/slack/get_alert')
-class SlackGetAlert(Resource):
+@api.route('/slack/get_msg')
+class SlackGetMsg(Resource):
     def post(self):
         """
-        Get a specific alert with the given alert id and send it to Slack
+        Get a specific msg with the given msg id and send it to Slack
         """
-        send_slack_log('Entered /slack/get_alert')
+        send_slack_log('Entered /slack/get_msg')
         send_slack_log('Request info:')
         send_slack_log(str(request.form))
-        alert_id = request.form['text']
+        msg_id = request.form['text']
         channel_id = request.form['channel_id']
         try:
-            id = int(alert_id)
+            id = int(msg_id)
         except ValueError:
-            return "Invalid Alert ID: " + str(alert_id)
-        text = read_alert(id)
-        formated_alert = slack_format_alert(text)
-        response = send_json_to_slack_channel(formated_alert, channel_id)
+            return "Invalid Msg ID: " + str(msg_id)
+        text = read_msg(id)
+        formated_msg = slack_format_msg(text)
+        response = send_json_to_slack_channel(formated_msg, channel_id)
         send_slack_log('Response info:')
         send_slack_log(response)
-        return "Alert " + str(id) + " fetched"
+        return "Msg " + str(id) + " fetched"
 
 
-@api.route('/slack/update_alert')
-class SlackUpdateAlert(Resource):
+@api.route('/slack/update_msg')
+class SlackUpdateMsg(Resource):
     def post(self):
         """
-        Update an alert in the system through a Slack message
+        Update an msg in the system through a Slack message
         """
-        send_slack_log('Entered /slack/update_alert')
+        send_slack_log('Entered /slack/update_msg')
         send_slack_log('Request info:')
         send_slack_log(str(request.form))
         trigger_id = request.form['trigger_id']
@@ -254,29 +254,29 @@ class SlackUpdateAlert(Resource):
                              config['slack_update_form_path'])
         send_slack_log('Response info:')
         send_slack_log(str(response))
-        return 'Please enter the updated alert information in the form'
+        return 'Please enter the updated msg information in the form'
 
 
-@api.route('/slack/delete_alert')
-class SlackDeleteAlert(Resource):
+@api.route('/slack/delete_msg')
+class SlackDeleteMsg(Resource):
     def post(self):
         """
-        Delete an alert in the system through a Slack message
+        Delete an msg in the system through a Slack message
         """
-        send_slack_log('Entered /slack/delete_alert')
+        send_slack_log('Entered /slack/delete_msg')
         send_slack_log('Request info:')
         send_slack_log(str(request.form))
-        alert_id = json.loads(request.form['text'])
-        return delete_alert(int(alert_id))
+        msg_id = json.loads(request.form['text'])
+        return delete_msg(int(msg_id))
 
 
-@api.route('/slack/filter_alerts')
-class SlacFilterAlerts(Resource):
+@api.route('/slack/filter_msgs')
+class SlacFilterMsgs(Resource):
     def post(self):
         """
-        Filter alerts in the system through a Slack message
+        Filter msgs in the system through a Slack message
         """
-        send_slack_log('Entered /slack/filter_alerts')
+        send_slack_log('Entered /slack/filter_msgs')
         send_slack_log('Request info:')
         send_slack_log(str(request.form))
         trigger_id = request.form['trigger_id']
@@ -286,7 +286,7 @@ class SlacFilterAlerts(Resource):
                              config['slack_filter_form_path'])
         send_slack_log('Response info:')
         send_slack_log(str(response))
-        return 'Please enter alerts filtering information in the form'
+        return 'Please enter msgs filtering information in the form'
 
 
 @api.route('/slack/submit')
@@ -316,18 +316,18 @@ class MattermostHello(Resource):
         return push_to_mattermost(text)
 
 
-@api.route('/mattermost_alert')
-class MattermostAlert(Resource):
+@api.route('/mattermost_msg')
+class MattermostMsg(Resource):
     def post(self):
         """
-        Get alert with the requested alert id and return to mattermost
+        Get msg with the requested msg id and return to mattermost
         """
         try:
-            alertId = int(request.form['text'])
+            msgId = int(request.form['text'])
         except ValueError:
-            return {"text": "please enter a valid integer as alert Id."}
-        alert = str(read_alert(alertId))
-        return {"text": alert}
+            return {"text": "please enter a valid integer as msg Id."}
+        msg = str(read_msg(msgId))
+        return {"text": msg}
 
 
 @api.route('/mattermost_echo')
@@ -342,26 +342,26 @@ class MattermostEcho(Resource):
                 + text + '\nuser:' + user}
 
 
-@api.route('/mattermost_alerts')
-class MattermostAlerts(Resource):
+@api.route('/mattermost_msgs')
+class MattermostMsgs(Resource):
     def get(self):
         """
-        Get all alerts and send it to Mattermost
+        Get all msgs and send it to Mattermost
         """
-        text = read_filtered_alerts(request.args)
+        text = read_filtered_msgs(request.args)
         return push_to_mattermost(text)
 
     def post(self):
         """
-        Put a new alert into the system through a Mattermost message
+        Put a new msg into the system through a Mattermost message
         """
         try:
-            alert_json = json.loads(request.form['text'])
+            msg_json = json.loads(request.form['text'])
         except json.decoder.JSONDecodeError:
-            return {"text": "Failed to send alert. Incorrect json format."}
-        alertId = write_alert(alert_json)
-        responseText = 'successfully created alert ' \
-                       'with id: ' + alertId
+            return {"text": "Failed to send msg. Incorrect json format."}
+        msgId = write_msg(msg_json)
+        responseText = 'successfully created msg ' \
+                       'with id: ' + msgId
         return {"text": responseText}
 
 
