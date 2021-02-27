@@ -71,7 +71,7 @@ def convert_name(msg):
     return msg_new
 
 
-def write_message(msg):
+def write_msg(msg):
     """
     Add a new message to database
     """
@@ -97,7 +97,7 @@ def write_message(msg):
     return "Message " + str(new_msg.id) + " inserted"
 
 
-def update_message(msg, id):
+def update_msg(msg, id):
     fetched_msg = Message.query.get(id)
     if fetched_msg is None:
         return {'message': 'Message' + str(id) + ' does not exist'}, 404
@@ -120,14 +120,14 @@ def update_message(msg, id):
     return 'Message ' + str(id) + ' updated'
 
 
-def number_of_messages():
+def number_of_msgs():
     """
     This will return the total number of messages.
     """
     return db.session.query(Message).count()
 
 
-def newest_message():
+def newest_msg():
     """
     This will return the latest message.
     """
@@ -135,21 +135,21 @@ def newest_message():
     return m.event_datetime
 
 
-def oldest_message():
+def oldest_msg():
     """
     This will return the oldest message.
     """
     return db.session.query(Message).first().event_datetime
 
 
-def read_message(id):
+def read_msg(id):
     fetched_msg = Message.query.get(id)
     msg_schema = MessageSchema()
     msg_json = msg_schema.dump(fetched_msg)
     return dic_lst_to_tuple_lst([msg_json])
 
 
-def delete_message(id):
+def delete_msg(id):
     """
     delete a message and associated thread from the database
     """
@@ -164,7 +164,7 @@ def delete_message(id):
     return 'Message ' + str(id) + ' deleted'
 
 
-def read_filtered_messages(query_params):
+def read_filtered_msgs(query_params):
     priority_value = query_params.get('priority')
     date_value = query_params.get('date')
     type_value = query_params.get('type')

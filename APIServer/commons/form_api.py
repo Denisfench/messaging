@@ -1,7 +1,7 @@
 from APIServer.commons.api_utils import read_json
 
 
-def get_message_form(path):
+def get_msg_form(path):
     return read_json(path)
 
 
