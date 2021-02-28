@@ -5,7 +5,7 @@ def get_msg_form(path):
     return read_json(path)
 
 
-def create_message_json(msg_tuple):
+def create_msg_json(msg_tuple):
     '''
     Create msg_json from a message tuple
     '''

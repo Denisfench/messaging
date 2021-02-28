@@ -9,14 +9,14 @@ from APIServer.slack.push import send_json_to_slack_channel
 from APIServer.slack.push import open_form
 from APIServer.slack.push import update_form
 from APIServer.slack.format import get_confirmation_form
-from APIServer.slack.format import slack_format_alert
-from APIServer.slack.format import create_alert_from_slack_message
-from APIServer.slack.format import create_updated_alert_from_slack_message
+from APIServer.slack.format import slack_format_msg
+from APIServer.slack.format import create_msg_from_slack_message
+from APIServer.slack.format import create_updated_msg_from_slack_message
 from APIServer.slack.format import get_id_from_payload
 from APIServer.slack.format import get_filter_params_from_slack
 from APIServer.slack.format import get_action_value
 from APIServer.slack.format import get_page_value
-from APIServer.slack.format import get_alerts_count
+from APIServer.slack.format import get_msgs_count
 
 
 SLACK_CONFIG_PATH = \
@@ -24,16 +24,16 @@ SLACK_CONFIG_PATH = \
 SAMPLE_ALERT_JSON_PATH = \
     'APIServer/test_data/test_json.json'
 POST_ALERT_PAYLOAD_PATH = \
-    'APIServer/test_data/slack/post_alert_payload.json'
+    'APIServer/test_data/slack/post_msg_payload.json'
 UPDATE_ALERT_PAYLOAD_PATH = \
-    'APIServer/test_data/slack/update_alert_payload.json'
+    'APIServer/test_data/slack/update_msg_payload.json'
 SAMPLE_MESSAGE_PATH = \
     'APIServer/test_data/slack/formatted_slack_message.json'
 TIME = constants.TEST_TIME
 slack_config = read_json(SLACK_CONFIG_PATH)
-sample_alert_json = read_json(SAMPLE_ALERT_JSON_PATH)
-post_alert_payload = read_json(POST_ALERT_PAYLOAD_PATH)
-update_alert_payload = read_json(UPDATE_ALERT_PAYLOAD_PATH)
+sample_msg_json = read_json(SAMPLE_ALERT_JSON_PATH)
+post_msg_payload = read_json(POST_ALERT_PAYLOAD_PATH)
+update_msg_payload = read_json(UPDATE_ALERT_PAYLOAD_PATH)
 sample_message = read_json(SAMPLE_MESSAGE_PATH)
 
 
@@ -84,7 +84,7 @@ class TestSlack(unittest.TestCase):
         })
         response = open_form('my_channel',
                              'my_tigger_id',
-                             'test_data/slack/post_alert_form.json')
+                             'test_data/slack/post_msg_form.json')
         self.assertEqual('ok', response[200])
 
     @responses.activate
@@ -111,22 +111,22 @@ class TestSlack(unittest.TestCase):
                                {})
         self.assertEqual('ok', response[200])
 
-    def testCreateAlertFromSlack(self):
+    def testCreateMsgFromSlack(self):
         """
-        Testing if create_alert_from_slack_message works
+        Testing if create_msg_from_slack_message works
         """
-        alert_json = create_alert_from_slack_message(post_alert_payload, TIME)
-        self.assertEqual(sample_alert_json, alert_json)
+        msg_json = create_msg_from_slack_message(post_msg_payload, TIME)
+        self.assertEqual(sample_msg_json, msg_json)
 
-    def testFormatAlert(self):
+    def testFormatMsg(self):
         """
-        Testing if slack_format_alert works
+        Testing if slack_format_msg works
         """
-        ret = slack_format_alert([])
+        ret = slack_format_msg([])
         self.assertEqual({'text':
                          'This msg does not exist or has been deleted.'},
                          ret)
-        ret = slack_format_alert([(1,
+        ret = slack_format_msg([(1,
                                    '2020-03-04 17:54:20',
                                    '10001',
                                    'New York City',
@@ -141,24 +141,24 @@ class TestSlack(unittest.TestCase):
 
     def testUpdateAlert(self):
         """
-        Testing if create_updated_alert_from_slack_message works
+        Testing if create_updated_msg_from_slack_message works
         """
-        alert_json = create_updated_alert_from_slack_message(
-            update_alert_payload,
+        msg_json = create_updated_msg_from_slack_message(
+            update_msg_payload,
             TIME,
-            sample_alert_json)
-        # update sample alert json
-        self.assertEqual(alert_json['zipcode'], '10003')
-        self.assertEqual(alert_json['sender'], 'Slack')
-        self.assertEqual(alert_json['active'], 'Not Active')
+            sample_msg_json)
+        # update sample msg json
+        self.assertEqual(msg_json['zipcode'], '10003')
+        self.assertEqual(msg_json['sender'], 'Slack')
+        self.assertEqual(msg_json['active'], 'Not Active')
 
     def testGetAlertId(self):
         """
         Testing if get_id_from_payload works
         """
-        payload = read_json('test_data/slack/update_alert_payload.json')
-        alert_id = get_id_from_payload(payload)
-        self.assertEqual('1', alert_id)
+        payload = read_json('test_data/slack/update_msg_payload.json')
+        msg_id = get_id_from_payload(payload)
+        self.assertEqual('1', msg_id)
 
     def testConfirmation(self):
         """
@@ -172,7 +172,7 @@ class TestSlack(unittest.TestCase):
         """
         Testing if get_filter_params_from_slack works
         """
-        payload = read_json('test_data/slack/filter_alerts_payload.json')
+        payload = read_json('test_data/slack/filter_msgs_payload.json')
         response = get_filter_params_from_slack(payload)
         sample_response = {}
         sample_response['country'] = 'USA'
@@ -186,12 +186,12 @@ class TestSlack(unittest.TestCase):
 
     def testGetActionPageAndCount(self):
         """
-        Testing if get_action_value, get_page_value, get_alerts_count works
+        Testing if get_action_value, get_page_value, get_msgs_count works
         """
         payload = read_json('test_data/slack/next_page_payload.json')
         action = get_action_value(payload)
         page = get_page_value(payload)
-        alerts_count = get_alerts_count(payload)
+        msgs_count = get_msgs_count(payload)
         self.assertEqual('next_page', action)
         self.assertEqual(1, page)
-        self.assertEqual(10, alerts_count)
+        self.assertEqual(10, msgs_count)
