@@ -150,10 +150,10 @@ class Test(TestCase):
             rv = c.get('/msgs?region=New Jersey')
             self.assertEqual(eval(rv.data.decode('utf-8')[:-1]), [])
 
-            rv = c.get('/msgs?severity=Low')
+            rv = c.get('/msgs?priority=Low')
             self.assertEqual(eval(rv.data.decode('utf-8')[:-1]), test_response)
 
-            rv = c.get('/msgs?severity=High')
+            rv = c.get('/msgs?priority=High')
             self.assertEqual(eval(rv.data.decode('utf-8')[:-1]), [])
 
             rv = c.get('/msgs?type=Fire')
@@ -181,7 +181,7 @@ class Test(TestCase):
             self.assertEqual(eval(rv.data.decode('utf-8')[:-1]), [])
 
             rv = c.get('/msgs?region=\
-                New York&severity=Low&type=Fire&country=USA&date=2019-01-01')
+                New York&priority=Low&type=Fire&country=USA&date=2019-01-01')
             self.assertEqual(eval(rv.data.decode('utf-8')[:-1]), test_response)
 
             rv = c.put('/msgs/1', json=test_update)

@@ -178,7 +178,7 @@ class TestSlack(unittest.TestCase):
         sample_response['country'] = 'USA'
         sample_response['state'] = 'New York'
         sample_response['type'] = 'Fire'
-        sample_response['severity'] = 'Low'
+        sample_response['priority'] = 'Low'
         sample_response['date'] = '2019-01-01'
         sample_response['limit'] = 5
         sample_response['active'] = 'y'
