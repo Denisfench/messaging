@@ -12,7 +12,7 @@ class Message(db.Model):
     event_country = db.Column(db.Text)
     event_type = db.Column(db.Text)
     event_description = db.Column(db.Text)
-    event_severity = db.Column(db.Text)
+    event_priority = db.Column(db.Text)
     msg_sender = db.Column(db.Text)
     active = db.Column(db.Boolean, default=True)
 
