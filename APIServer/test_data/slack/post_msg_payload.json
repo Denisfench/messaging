@@ -1,7 +1,7 @@
 {
 	"type": "view_submission",
 	"view": {
-		"callback_id": "post_alert",
+		"callback_id": "post_msg",
 		"state": {
 			"values": {
 				"Js3Q": {

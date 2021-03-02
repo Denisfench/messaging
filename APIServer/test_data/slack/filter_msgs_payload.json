@@ -11,7 +11,7 @@
 					}
 				},
 				"YS2BV": {
-					"priority": {
+					"severity": {
 						"type": "plain_text_input",
 						"value": "Low"
 					}

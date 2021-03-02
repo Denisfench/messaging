@@ -21,7 +21,7 @@
 					}
 				},
 				"dFn=": {
-					"priority": {
+					"severity": {
 						"type": "static_select"
 					}
 				},

@@ -21,19 +21,19 @@ from APIServer.slack.format import get_msgs_count
 
 SLACK_CONFIG_PATH = \
     'APIServer/test_data/slack/test_slack.json'
-SAMPLE_ALERT_JSON_PATH = \
+SAMPLE_MSG_JSON_PATH = \
     'APIServer/test_data/test_json.json'
-POST_ALERT_PAYLOAD_PATH = \
+POST_MSG_PAYLOAD_PATH = \
     'APIServer/test_data/slack/post_msg_payload.json'
-UPDATE_ALERT_PAYLOAD_PATH = \
+UPDATE_MSG_PAYLOAD_PATH = \
     'APIServer/test_data/slack/update_msg_payload.json'
 SAMPLE_MESSAGE_PATH = \
     'APIServer/test_data/slack/formatted_slack_message.json'
 TIME = constants.TEST_TIME
 slack_config = read_json(SLACK_CONFIG_PATH)
-sample_msg_json = read_json(SAMPLE_ALERT_JSON_PATH)
-post_msg_payload = read_json(POST_ALERT_PAYLOAD_PATH)
-update_msg_payload = read_json(UPDATE_ALERT_PAYLOAD_PATH)
+sample_msg_json = read_json(SAMPLE_MSG_JSON_PATH)
+post_msg_payload = read_json(POST_MSG_PAYLOAD_PATH)
+update_msg_payload = read_json(UPDATE_MSG_PAYLOAD_PATH)
 sample_message = read_json(SAMPLE_MESSAGE_PATH)
 
 
@@ -139,7 +139,7 @@ class TestSlack(unittest.TestCase):
                                    'Active')])
         self.assertEqual(sample_message, ret)
 
-    def testUpdateAlert(self):
+    def testUpdateMsg(self):
         """
         Testing if create_updated_msg_from_slack_message works
         """
@@ -152,7 +152,7 @@ class TestSlack(unittest.TestCase):
         self.assertEqual(msg_json['sender'], 'Slack')
         self.assertEqual(msg_json['active'], 'Not Active')
 
-    def testGetAlertId(self):
+    def testGetMsgId(self):
         """
         Testing if get_id_from_payload works
         """

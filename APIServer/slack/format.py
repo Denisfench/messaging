@@ -26,7 +26,7 @@ def slack_format_msg(msg_json):
         + msg_json[0][5]
     event = msg_json[0][6]
     description = msg_json[0][7]
-    priority = msg_json[0][8]
+    severity = msg_json[0][8]
     sender = msg_json[0][9]
     active_status = msg_json[0][10]
     THREAD_URL = 'https://gcallah.github.io/socnet/webapp.html#/thread/'
@@ -36,7 +36,7 @@ def slack_format_msg(msg_json):
         + '* (_' + active_status + '_)\n' + description
     message['blocks'][2]['elements'][0]['text'] = location + '\n' \
         + datetime + '\n' \
-        + priority + '\nby *' \
+        + severity + '\nby *' \
         + sender + '*'
     message['blocks'][3]['accessory']['url'] = url
     return message
@@ -50,7 +50,7 @@ def create_msg_from_slack_message(payload, time):
     values = payload['view']['state']['values']
     for value in values:
         for key in values[value]:
-            if key == 'priority':
+            if key == 'severity':
                 msg_json[key] = \
                     values[value][key]['selected_option']['text']['text']
             else:
@@ -68,7 +68,7 @@ def create_updated_msg_from_slack_message(payload, time, msg_json):
         for key in values[value]:
             if key == 'msg_id':
                 continue
-            if key == 'priority':
+            if key == 'severity':
                 if values[value][key].get('selected_option'):
                     msg_json[key] = \
                         values[value][key]['selected_option']['text']['text']

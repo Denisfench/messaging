@@ -49,10 +49,10 @@
 			"type": "input",
 			"element": {
 				"type": "static_select",
-				"action_id": "priority",
+				"action_id": "severity",
 				"placeholder": {
 					"type": "plain_text",
-					"text": "Please select event priority"
+					"text": "Please select event severity"
 				},
 				"options": [
 					{
@@ -80,7 +80,7 @@
 			},
 			"label": {
 				"type": "plain_text",
-				"text": "Priority"
+				"text": "Severity"
 			}
 		},
 		{
