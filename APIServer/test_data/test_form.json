@@ -18,7 +18,7 @@
         },
         "msg_sender": {
             "type": "string",
-            "description": "Who is sending the alert?",
+            "description": "Who is sending the message?",
             "example": "Sender Name"
         }
     }
