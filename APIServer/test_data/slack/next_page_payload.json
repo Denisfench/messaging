@@ -458,7 +458,7 @@
 					}
 				},
 				"K9q": {
-					"severity": {
+					"priority": {
 						"type": "plain_text_input"
 					}
 				},

@@ -17,7 +17,7 @@
 					}
 				},
 				"ouGX": {
-					"severity": {
+					"priority": {
 						"type": "static_select",
 						"selected_option": {
 							"text": {
