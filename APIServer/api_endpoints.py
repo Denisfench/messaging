@@ -70,7 +70,7 @@ class Endpoints(Resource):
 class MsgFormat(Resource):
     def get(self):
         """
-        Get the format of an msg
+        Get the format of a message
         """
         return get_msg_form(config['msg_format_path'])
 
@@ -88,7 +88,7 @@ class FilterValues(Resource):
 class MessageFormat(Resource):
     def get(self):
         """
-        Get the format of an msg
+        Get the format of a message
         """
         return get_msg_form(config['format_path'])
 
@@ -101,7 +101,7 @@ msg = api.schema_model('Msg',
 class TotalMsgs(Resource):
     def get(self):
         """
-        Get the total number of msgs
+        Get the total number of messages
         """
         return {'number_of_msgs': number_of_msgs()}
 
@@ -110,7 +110,7 @@ class TotalMsgs(Resource):
 class NewestMsg(Resource):
     def get(self):
         """
-        Return the date and time for the latest msg
+        Return the date and time for the latest message
         """
         return {"newest_msg": newest_msg()}
 
@@ -119,19 +119,19 @@ class NewestMsg(Resource):
 class OldestMsg(Resource):
     def get(self):
         """
-        Return the date and time for the oldest msg
+        Return the date and time for the oldest message
         """
         return {"oldest_msg": oldest_msg()}
 
 
 @api.route('/msgs')
 class MsgsLists(Resource):
-    @api.doc(params={'priority': 'Filter msgs by priority'})
-    @api.doc(params={'date': 'Filter msgs by date'})
-    @api.doc(params={'type': 'Filter msgs by type'})
-    @api.doc(params={'region': 'Filter msgs by region'})
-    @api.doc(params={'country': 'Filter msgs by country'})
-    @api.doc(params={'active': 'Filter msgs by active status. \
+    @api.doc(params={'priority': 'Filter messages by priority'})
+    @api.doc(params={'date': 'Filter messages by date'})
+    @api.doc(params={'type': 'Filter messages by type'})
+    @api.doc(params={'region': 'Filter messages by region'})
+    @api.doc(params={'country': 'Filter messages by country'})
+    @api.doc(params={'active': 'Filter messages by active status. \
         Enter y or n'})
     @api.doc(params={'limit': 'Pagination parameter. \
         Indicate the max number of results returned. \
@@ -141,14 +141,14 @@ class MsgsLists(Resource):
         If not provided, the default value will be set to 0.'})
     def get(self):
         """
-        Get multiple (filtered) msgs based on the query parameters
+        Get multiple (filtered) messages based on the query parameters
         """
         return read_filtered_msgs(request.args)
 
     @api.expect(msg)
     def post(self):
         """
-        Put a new msg into the system
+        Put a new message into the system
         """
         return write_msg(request.json)
 
@@ -158,20 +158,20 @@ class MsgsLists(Resource):
 class Msgs(Resource):
     def get(self, id):
         """
-        Get a specific msg with the given msg id
+        Get a specific messages with the given message id
         """
         return read_msg(id)
 
     @api.expect(msg)
     def put(self, id):
         """
-        Update an msg in the system with the given msg id
+        Update a message in the system with the given message id
         """
         return update_msg(request.json, id)
 
     def delete(self, id):
         """
-        Delete an msg in the system with the given msg id
+        Delete a message in the system with the given message id
         """
         return delete_msg(id)
 
@@ -184,14 +184,14 @@ comment = api.model('Comment', {'text': fields.String})
 class Threads(Resource):
     def get(self, id):
         """
-        List all comments under a thread(thread id is given)
+        List all comments under a thread (thread id is given)
         """
         return get_comments(id)
 
     @api.expect(comment)
     def put(self, id):
         """
-        Post a new comment under a thread(thread id is given)
+        Post a new comment under a thread (thread id is given)
         """
         return add_comment(request.json, id)
 
@@ -200,7 +200,7 @@ class Threads(Resource):
 class SlackPostMsg(Resource):
     def post(self):
         """
-        Post a new msg into the system through a Slack message
+        Post a new message into the system through a Slack message
         """
         send_slack_log('Entered /slack/post_msg')
         send_slack_log('Request info:')
@@ -219,7 +219,7 @@ class SlackPostMsg(Resource):
 class SlackGetMsg(Resource):
     def post(self):
         """
-        Get a specific msg with the given msg id and send it to Slack
+        Get a specific message with the given message id and send it to Slack
         """
         send_slack_log('Entered /slack/get_msg')
         send_slack_log('Request info:')
@@ -242,7 +242,7 @@ class SlackGetMsg(Resource):
 class SlackUpdateMsg(Resource):
     def post(self):
         """
-        Update an msg in the system through a Slack message
+        Update a message in the system through a Slack message
         """
         send_slack_log('Entered /slack/update_msg')
         send_slack_log('Request info:')
@@ -261,7 +261,7 @@ class SlackUpdateMsg(Resource):
 class SlackDeleteMsg(Resource):
     def post(self):
         """
-        Delete an msg in the system through a Slack message
+        Delete a message in the system through a Slack message
         """
         send_slack_log('Entered /slack/delete_msg')
         send_slack_log('Request info:')
@@ -274,7 +274,7 @@ class SlackDeleteMsg(Resource):
 class SlacFilterMsgs(Resource):
     def post(self):
         """
-        Filter msgs in the system through a Slack message
+        Filter messages in the system through a Slack message
         """
         send_slack_log('Entered /slack/filter_msgs')
         send_slack_log('Request info:')
@@ -294,7 +294,7 @@ class SlackSubmit(Resource):
     @api.doc(responses={200: 'OK'})
     def post(self):
         """
-        An API that handles all Slack submit events(interactions)
+        An API that handles all Slack submit events (interactions)
         """
         send_slack_log('Entered /slack/submit')
         send_slack_log('Request info:')
@@ -320,7 +320,7 @@ class MattermostHello(Resource):
 class MattermostMsg(Resource):
     def post(self):
         """
-        Get msg with the requested msg id and return to mattermost
+        Get message with the requested message id and return to mattermost
         """
         try:
             msgId = int(request.form['text'])
@@ -346,14 +346,14 @@ class MattermostEcho(Resource):
 class MattermostMsgs(Resource):
     def get(self):
         """
-        Get all msgs and send it to Mattermost
+        Get all messages and send it to Mattermost
         """
         text = read_filtered_msgs(request.args)
         return push_to_mattermost(text)
 
     def post(self):
         """
-        Put a new msg into the system through a Mattermost message
+        Put a new message into the system through a Mattermost message
         """
         try:
             msg_json = json.loads(request.form['text'])
