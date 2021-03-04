@@ -94,7 +94,7 @@ class MessageFormat(Resource):
 
 
 msg = api.schema_model('Msg',
-                         get_msg_form(config['format_path']))
+                       get_msg_form(config['format_path']))
 
 
 @api.route('/number_of_msgs')
