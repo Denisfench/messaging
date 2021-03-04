@@ -127,16 +127,16 @@ class TestSlack(unittest.TestCase):
                          'This msg does not exist or has been deleted.'},
                          ret)
         ret = slack_format_msg([(1,
-                         '2020-03-04 17:54:20',
-                         '10001',
-                         'New York City',
-                         'New York',
-                         'USA',
-                         'Fire',
-                         'Fire in the building',
-                         'High',
-                         'Socnet Tester',
-                         'Active')])
+                                 '2020-03-04 17:54:20',
+                                 '10001',
+                                 'New York City',
+                                 'New York',
+                                 'USA',
+                                 'Fire',
+                                 'Fire in the building',
+                                 'High',
+                                 'Socnet Tester',
+                                 'Active')])
         self.assertEqual(sample_message, ret)
 
     def testUpdateMsg(self):
