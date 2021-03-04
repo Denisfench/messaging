@@ -58,14 +58,14 @@ def query_params_to_list(query_string):
 
 def convert_name(msg):
     msg_new = {"event_zipcode": msg['zipcode'],
-               "event_city": msg['city'],
-               "event_state": msg['state'],
-               "event_country": msg['country'],
-               "event_type": msg['type'],
-               "event_description": msg['description'],
-               "msg_sender": msg['sender'],
-               "event_datetime": msg['datetime'],
-               "event_priority": msg['priority']}
+       "event_city": msg['city'],
+       "event_state": msg['state'],
+       "event_country": msg['country'],
+       "event_type": msg['type'],
+       "event_description": msg['description'],
+       "msg_sender": msg['sender'],
+       "event_datetime": msg['datetime'],
+       "event_priority": msg['priority']}
     if msg.get('active'):
         msg_new['active'] = msg['active']
     return msg_new
