@@ -13,5 +13,5 @@ else
     export capture="--nocapture"
 fi
 
-echo "SOCNET_HOME: $SOCNET_HOME"
+echo "MESSAGING_HOME: $MESSAGING_HOME"
 nosetests --ignore-files=$ignore_files --exe --verbose --with-coverage --cover-package=APIServer $capture --exclude=$ignore_dir
