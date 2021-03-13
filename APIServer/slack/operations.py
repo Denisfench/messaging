@@ -43,7 +43,7 @@ def handle_interaction(payload_json):
         if payload_json['view']['callback_id'] == 'post_msg':
             send_slack_log('callback_id: ' + 'post_msg')
             msg_json = create_msg_from_slack_message(payload_json,
-                                                         time)
+                                                     time)
             send_slack_log('New message json: ' + str(msg_json))
             response = write_msg(msg_json)
             send_slack_log('Response info: ')
