@@ -65,19 +65,6 @@ clean:
 
 webapp: $(WEB_PUBLIC)/index.html
 
-heroku:
-	# install heroku:
-	curl https://cli-assets.heroku.com/install.sh | sh
-	heroku login
-	heroku create nyu-messaging
-	# set up heroku app as remote for this repo
-	heroku git:remote -a nyu-messaging
-	heroku config:set PYTHONPATH="/app"
-	heroku config:set MESSAGING_HOME="/app"
-	echo "web: gunicorn source.endpoints:app" > Procfile
-	git add Procfile
-	# enter deploy code in .travis.yml
-
 $(WEB_PUBLIC)/index.html: $(WEBFILES)
 	- rm -r static || true
 	- rm webapp.html || true
