@@ -43,7 +43,7 @@ app = create_app(config)
 # when deployed to Heroku
 app.wsgi_app = ProxyFix(app.wsgi_app)
 
-api = Api(app, title='SOCNET API')
+api = Api(app, title='MESSAGING SYSTEM API')
 
 app.config.SWAGGER_UI_DOC_EXPANSION = 'list'
 
