@@ -36,8 +36,11 @@ prod: $(INCS) $(HTMLFILES) tests
 tests: FORCE
 	cd APIServer; make tests
 
-api_server: 
+api_server: FORCE
 	cd APIServer; make api_server
+
+dev_env: FORCE
+	pip3 install -r requirements-dev.txt
 
 # get new code for each submodule:
 submods:
