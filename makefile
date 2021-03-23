@@ -39,6 +39,7 @@ tests: FORCE
 api_server: FORCE
 	cd APIServer; make api_server
 
+#dev_env will install all necessary libraries to run locally
 dev_env: FORCE
 	pip3 install -r requirements-dev.txt
 
