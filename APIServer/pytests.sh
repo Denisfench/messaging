@@ -1,3 +1,5 @@
+#!/bin/sh
+# if downloading to Windows, watch for end-of-line character changing.
 export user_type="test"
 export test_dir="tests"
 export ignore_files="scheduler"  # dummy file!
