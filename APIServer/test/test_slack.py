@@ -201,6 +201,7 @@ class TestSlack(unittest.TestCase):
         self.assertEqual('next_page', action)
         self.assertEqual(1, page)
         self.assertEqual(10, msgs_count)
+
     @responses.activate
     def testHeroku(self):
         """
