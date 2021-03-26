@@ -17,7 +17,7 @@ from APIServer.slack.format import get_filter_params_from_slack
 from APIServer.slack.format import get_action_value
 from APIServer.slack.format import get_page_value
 from APIServer.slack.format import get_msgs_count
-
+from APIServer.Heroku.pull import get_heroku_status
 
 SLACK_CONFIG_PATH = \
     'APIServer/test_data/slack/test_slack.json'
@@ -29,12 +29,18 @@ UPDATE_MSG_PAYLOAD_PATH = \
     'APIServer/test_data/slack/update_msg_payload.json'
 SAMPLE_MESSAGE_PATH = \
     'APIServer/test_data/slack/formatted_slack_message.json'
+
+
+HEROKU_CONFIG_PATH = \
+    'APIServer/Heroku/heroku_config.json'
 TIME = constants.TEST_TIME
 slack_config = read_json(SLACK_CONFIG_PATH)
 sample_msg_json = read_json(SAMPLE_MSG_JSON_PATH)
 post_msg_payload = read_json(POST_MSG_PAYLOAD_PATH)
 update_msg_payload = read_json(UPDATE_MSG_PAYLOAD_PATH)
 sample_message = read_json(SAMPLE_MESSAGE_PATH)
+
+heroku_config = read_json(HEROKU_CONFIG_PATH)
 
 
 class TestSlack(unittest.TestCase):
@@ -195,3 +201,17 @@ class TestSlack(unittest.TestCase):
         self.assertEqual('next_page', action)
         self.assertEqual(1, page)
         self.assertEqual(10, msgs_count)
+    @responses.activate
+    def testHeroku(self):
+        """
+        Testing if get_heroku_status works
+        """
+        responses.add(**{
+            'method': responses.GET,
+            'url': heroku_config['Heroku_Status'],
+            'body': 'ok',
+            'status': 200,
+            'content_type': 'application/json'
+        })
+        response = get_heroku_status('Hello, Socnet')
+        self.assertEqual('ok', response[200])
