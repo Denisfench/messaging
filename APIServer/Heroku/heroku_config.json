@@ -1,3 +1,5 @@
 {
-	"Heroku_Status": "https://status.heroku.com/api/v4/current-status"
+	"Heroku_Status": "https://status.heroku.com/api/v4/current-status",
+	"Slack_Message_Post": "https://slack.com/api/chat.postMessage",
+	"Slack_Views_Open": "https://slack.com/api/views.open"
 }
