@@ -9,9 +9,10 @@ slack_config = read_json(SLACK_CONFIG_PATH)
 
 
 def get_heroku_status(text):
-    URL = "https://status.heroku.com/api/v4/current-status"
-    response = requests.get(url=URL)
-    # data = response.json()
+    URL = "https://api.heroku.com/apps"
+    headers = {"Accept": "application/vnd.heroku+json; version=3",
+               "Authorization": heroku_config['Heroku_Token']}
+    response = requests.get(url=URL, headers=headers)
     print(response.status_code)
     print(response.text)
     return {response.status_code: response.text}
