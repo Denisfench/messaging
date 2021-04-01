@@ -1,6 +1,7 @@
 {
 	"Log_Channel_Webhook": "https://hooks.slack.com/services/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",
-	"Heroku_Status": "https://status.heroku.com/api/v4/current-status",
+	"Heroku_Status": "https://api.heroku.com/apps",
+	"Heroku_Token": "Bearer $HEROKU_API_KEY",
 	"Slack_Message_Post": "https://slack.com/api/chat.postMessage",
 	"Slack_Views_Open": "https://slack.com/api/views.open",
 	"Bot_Access_Token": "Bearer xoxb-765850805047-949609123831-8NqdrRGPDmrNtED9M5D62Zl5",
