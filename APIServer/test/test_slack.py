@@ -237,6 +237,13 @@ class TestSlack(unittest.TestCase):
             'status': 200,
             'content_type': 'application/json'
         })
+        responses.add(**{
+            'method': responses.POST,
+            'url': slack_config['Post_Chat_URL'],
+            'body': 'not found',
+            'status': 404,
+            'content_type': 'application/json'
+        })
         response = send_text_to_slack_channel({'text': 'Hello, Socnet'},
                                               'my_channel')
         self.assertEqual('ok', response[200])
