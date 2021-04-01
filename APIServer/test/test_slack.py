@@ -215,7 +215,14 @@ class TestSlack(unittest.TestCase):
             'status': 200,
             'content_type': 'application/json'
         })
-        response = get_heroku_status('Hello, Socnet')
+        responses.add(**{
+            'method': responses.GET,
+            'url': heroku_config['Heroku_Status'],
+            'body': 'not found',
+            'status': 404,
+            'content_type': 'application/json'
+        })
+        response = get_heroku_status({'text': 'Hello, Socnet'})
         self.assertEqual('ok', response[200])
 
     @responses.activate
@@ -229,8 +236,6 @@ class TestSlack(unittest.TestCase):
             'body': 'ok',
             'status': 200,
             'content_type': 'application/json'
-            # 'content_type': 'text/plain'
-            # 'content_type': 'text/html'
         })
         response = send_text_to_slack_channel({'text': 'Hello, Socnet'},
                                               'my_channel')

@@ -13,16 +13,12 @@ def get_heroku_status(text):
     headers = {"Accept": "application/vnd.heroku+json; version=3",
                "Authorization": heroku_config['Heroku_Token']}
     response = requests.get(url=URL, headers=headers)
-    print(response.status_code)
-    print(response.text)
     return {response.status_code: response.text}
 
 
 def send_text_to_slack_channel(textToSend, channel):
     URL = 'https://slack.com/api/chat.postMessage'
-    # textToSend += ": " + channel
-    # textToSend = {'text': str(channel)}
-    # textToSend['channel'] = channel
+    textToSend['channel'] = channel
     textToSend['channel'] = {'text': str(channel)}
     headers = {"Authorization": slack_config['Bot_Access_Token'],
                "Content-Type": "application/json; charset=utf-8"}
