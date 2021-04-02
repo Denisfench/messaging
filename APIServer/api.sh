@@ -1,7 +1,7 @@
-# This shell script runs the SOCNET API server.
-# The user_type env var is needed to make user interactions within
-# SOCNET behave properly.
+# This shell script runs the Messaging API server.
+# Is `user_type` really needed?
 cd ..
 export user_type="api"
 export PYTHONPATH="$PWD"
-python3 APIServer/api_endpoints.py
+export FLASK_ENV=development
+FLASK_APP=APIServer.api_endpoints flask run --host=127.0.0.1 --port=8000

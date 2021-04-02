@@ -9,6 +9,19 @@ heroku_config = read_json(HEROKU_CONFIG_PATH)
 SLACK_CONFIG_PATH = 'slack/slack_config.json'
 slack_config = read_json(SLACK_CONFIG_PATH)
 
+TEST_HEROKU_DEPLOYS = {
+    "1": "03/31/2021",
+    "2": "04/1/2021",
+    "3": "04/2/2021",
+}
+
+
+def get_heroku_deployments(server):
+    """
+    We will return (all?) Heroku deployments for the app of interest.
+    """
+    return TEST_HEROKU_DEPLOYS
+
 
 def get_heroku_status(text):
     """

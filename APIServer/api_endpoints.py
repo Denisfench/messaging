@@ -6,6 +6,8 @@ from APIServer.commons.form_api import get_msg_form
 from APIServer.commons.api_utils import read_json
 from APIServer.commons.endpoint_api import get_endpoints
 
+from APIServer.Heroku.pull import get_heroku_deployments
+
 from APIServer.msgs.operations import read_filtered_msgs
 from APIServer.msgs.operations import write_msg
 from APIServer.msgs.operations import read_msg
@@ -213,6 +215,14 @@ class SlackPostMsg(Resource):
         send_slack_log('Response info:')
         send_slack_log(str(response))
         return 'Please enter the new msg information in the form'
+
+
+@api.route('/heroku/deployments')
+class HerokuDeployments(Resource):
+    def get(self):
+        deploys = get_heroku_deployments("SERVER GOES HERE!")
+        print(deploys)
+        return deploys
 
 
 @api.route('/slack/get_msg')
