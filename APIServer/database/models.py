@@ -31,3 +31,12 @@ class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     content = db.Column(db.Text)
     next_comment_id = db.Column(db.Integer, default=-1)
+
+
+class Status(db.Model):
+    __tablename__ = "apps"
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    app_id = db.Column(db.Text)
+    name = db.Column(db.Text)
+    released_at = db.Column(db.DateTime)
