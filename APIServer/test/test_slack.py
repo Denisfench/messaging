@@ -222,6 +222,13 @@ class TestSlack(unittest.TestCase):
             'status': 404,
             'content_type': 'application/json'
         })
+        responses.add(**{
+            'method': responses.POST,
+            'url': slack_config['Heroku_Status'],
+            'body': 'server unavailable',
+            'status': 503,
+            'content_type': 'application/json'
+        })
         response = get_heroku_status({'text': 'Hello, Socnet'})
         self.assertEqual('ok', response[200])
 
@@ -242,6 +249,13 @@ class TestSlack(unittest.TestCase):
             'url': slack_config['Post_Chat_URL'],
             'body': 'not found',
             'status': 404,
+            'content_type': 'application/json'
+        })
+        responses.add(**{
+            'method': responses.POST,
+            'url': slack_config['Post_Chat_URL'],
+            'body': 'server unavailable',
+            'status': 503,
             'content_type': 'application/json'
         })
         response = send_text_to_slack_channel({'text': 'Hello, Socnet'},
