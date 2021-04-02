@@ -17,8 +17,6 @@ from APIServer.slack.format import get_filter_params_from_slack
 from APIServer.slack.format import get_action_value
 from APIServer.slack.format import get_page_value
 from APIServer.slack.format import get_msgs_count
-from APIServer.Heroku.pull import get_heroku_status
-from APIServer.Heroku.pull import send_text_to_slack_channel
 
 SLACK_CONFIG_PATH = \
     'APIServer/test_data/slack/test_slack.json'
@@ -202,66 +200,3 @@ class TestSlack(unittest.TestCase):
         self.assertEqual('next_page', action)
         self.assertEqual(1, page)
         self.assertEqual(10, msgs_count)
-
-    @responses.activate
-    def testHerokuPull(self):
-        """
-        Testing if get_heroku_status works
-        """
-        responses.add(**{
-            'method': responses.GET,
-            'url': heroku_config['Heroku_Status'],
-            'body': 'ok',
-            'status': 200,
-            'content_type': 'application/json'
-        })
-        responses.add(**{
-            'method': responses.GET,
-            'url': heroku_config['Heroku_Status'],
-            'body': 'not found',
-            'status': 404,
-            'content_type': 'application/json'
-        })
-        responses.add(**{
-            'method': responses.GET,
-            'url': heroku_config['Heroku_Status'],
-            'body': 'service unavailable',
-            'status': 503,
-            'content_type': 'application/json'
-        })
-        response = get_heroku_status({'text': 'Hello, Socnet'})
-        if (self.assertEqual('ok', response[200]) is False):
-            if (self.assertEqual('not found', response[404]) is False):
-                self.assertEqual('service unavailable', response[503])
-
-    @responses.activate
-    def testHerokuPush(self):
-        """
-        Testing if send_text_to_slack_channel works
-        """
-        responses.add(**{
-            'method': responses.POST,
-            'url': slack_config['Post_Chat_URL'],
-            'body': 'ok',
-            'status': 200,
-            'content_type': 'application/json'
-        })
-        responses.add(**{
-            'method': responses.POST,
-            'url': slack_config['Post_Chat_URL'],
-            'body': 'not found',
-            'status': 404,
-            'content_type': 'application/json'
-        })
-        responses.add(**{
-            'method': responses.POST,
-            'url': slack_config['Post_Chat_URL'],
-            'body': 'service unavailable',
-            'status': 503,
-            'content_type': 'application/json'
-        })
-        response = send_text_to_slack_channel({'text': 'Hello, Socnet'},
-                                              'my_channel')
-        if (self.assertEqual('ok', response[200]) is False):
-            if (self.assertEqual('not found', response[404]) is False):
-                self.assertEqual('service unavailable', response[503])
