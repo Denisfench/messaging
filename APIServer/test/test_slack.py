@@ -223,7 +223,7 @@ class TestSlack(unittest.TestCase):
             'content_type': 'application/json'
         })
         responses.add(**{
-            'method': responses.POST,
+            'method': responses.GET,
             'url': slack_config['Heroku_Status'],
             'body': 'server unavailable',
             'status': 503,
