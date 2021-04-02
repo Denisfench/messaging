@@ -29,17 +29,12 @@ UPDATE_MSG_PAYLOAD_PATH = \
 SAMPLE_MESSAGE_PATH = \
     'APIServer/test_data/slack/formatted_slack_message.json'
 
-
-HEROKU_CONFIG_PATH = \
-    'APIServer/Heroku/heroku_config.json'
 TIME = constants.TEST_TIME
 slack_config = read_json(SLACK_CONFIG_PATH)
 sample_msg_json = read_json(SAMPLE_MSG_JSON_PATH)
 post_msg_payload = read_json(POST_MSG_PAYLOAD_PATH)
 update_msg_payload = read_json(UPDATE_MSG_PAYLOAD_PATH)
 sample_message = read_json(SAMPLE_MESSAGE_PATH)
-
-heroku_config = read_json(HEROKU_CONFIG_PATH)
 
 
 class TestSlack(unittest.TestCase):
