@@ -224,8 +224,8 @@ class TestSlack(unittest.TestCase):
         })
         responses.add(**{
             'method': responses.GET,
-            'url': slack_config['Heroku_Status'],
-            'body': 'server unavailable',
+            'url': heroku_config['Heroku_Status'],
+            'body': 'service unavailable',
             'status': 503,
             'content_type': 'application/json'
         })
@@ -254,7 +254,7 @@ class TestSlack(unittest.TestCase):
         responses.add(**{
             'method': responses.POST,
             'url': slack_config['Post_Chat_URL'],
-            'body': 'server unavailable',
+            'body': 'service unavailable',
             'status': 503,
             'content_type': 'application/json'
         })
