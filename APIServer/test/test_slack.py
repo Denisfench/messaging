@@ -230,7 +230,9 @@ class TestSlack(unittest.TestCase):
             'content_type': 'application/json'
         })
         response = get_heroku_status({'text': 'Hello, Socnet'})
-        self.assertEqual('ok', response[200])
+        if (self.assertEqual('ok', response[200]) is False):
+            if (self.assertEqual('not found', response[404]) is False):
+                self.assertEqual('service unavailable', response[503])
 
     @responses.activate
     def testHerokuPush(self):
@@ -260,4 +262,6 @@ class TestSlack(unittest.TestCase):
         })
         response = send_text_to_slack_channel({'text': 'Hello, Socnet'},
                                               'my_channel')
-        self.assertEqual('ok', response[200])
+        if (self.assertEqual('ok', response[200]) is False):
+            if (self.assertEqual('not found', response[404]) is False):
+                self.assertEqual('service unavailable', response[503])
