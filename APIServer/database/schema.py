@@ -1,4 +1,4 @@
-from APIServer.database.models import Message, Thread, Comment
+from APIServer.database.models import Message, Thread, Comment, Status
 from marshmallow_sqlalchemy import ModelSchema
 
 
@@ -15,3 +15,8 @@ class ThreadSchema(ModelSchema):
 class CommentSchema(ModelSchema):
     class Meta:
         model = Comment
+
+
+class StatusSchema(ModelSchema):
+    class Meta:
+        model = Status
