@@ -25,7 +25,6 @@ def get_heroku_status(text):
 def send_text_to_slack_channel(textToSend, channel):
     URL = 'https://slack.com/api/chat.postMessage'
     textToSend['channel'] = channel
-    # textToSend['channel'] = {'text': str(channel)}
     headers = {"Authorization": slack_config['Bot_Access_Token'],
                "Content-Type": "application/json; charset=utf-8"}
     response = requests.post(URL, json=textToSend, headers=headers)
