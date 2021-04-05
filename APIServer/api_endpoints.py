@@ -220,8 +220,10 @@ class SlackPostMsg(Resource):
 @api.route('/heroku/deployments')
 class HerokuDeployments(Resource):
     def get(self):
-        deploys = get_heroku_deployments("SERVER GOES HERE!")
-        print(deploys)
+        """
+        Get status of heroku deployments
+        """
+        deploys = get_heroku_deployments('SERVER GOES HERE!')
         return deploys
 
 
