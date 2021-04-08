@@ -74,7 +74,7 @@ class HerokuTests(TestCase):
             'status': 503,
             'content_type': 'application/json'
         })
-        response = send_text_to_slack_channel({'text': 'Hello, Socnet'},
+        response = send_text_to_slack_channel({'text': 'Hello, Messaging'},
                                               'my_channel')
         if (self.assertEqual('ok', response[200]) is False):
             if (self.assertEqual('not found', response[404]) is False):
