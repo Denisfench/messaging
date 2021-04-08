@@ -4,7 +4,6 @@ import responses
 
 from APIServer.commons.api_utils import read_json
 from APIServer.Heroku.pull import get_heroku_deployments
-from APIServer.Heroku.pull import get_heroku_status
 from APIServer.Heroku.pull import send_text_to_slack_channel
 
 HEROKU_CONFIG_PATH = 'APIServer/Heroku/heroku_config.json'
@@ -17,16 +16,11 @@ class HerokuTests(TestCase):
     """
     Tests for all Heroku interaction code.
     """
-    @responses.activate
-    def test_get_heroku_deployments(self):
-        self.assertTrue(isinstance
-                        (get_heroku_deployments("Need server here!"),
-                         dict))
 
     @responses.activate
     def testHerokuPull(self):
         """
-        Testing if get_heroku_status works
+        Testing if get_heroku_deployments works
         """
         responses.add(**{
             'method': responses.GET,
@@ -49,7 +43,7 @@ class HerokuTests(TestCase):
             'status': 503,
             'content_type': 'application/json'
         })
-        response = get_heroku_status({'text': 'Hello, Socnet'})
+        response = get_heroku_deployments({'text': 'Hello, Messaging'})
         if (self.assertEqual('ok', response[200]) is False):
             if (self.assertEqual('not found', response[404]) is False):
                 self.assertEqual('service unavailable', response[503])
