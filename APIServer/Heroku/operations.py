@@ -30,3 +30,11 @@ def write_status(status):
         db.session.add(new_status)
         db.session.commit()
     return "Status " + str(new_status.id) + " inserted"
+
+
+def latest_deployment():
+    """
+    find latest deployments and return it
+    """
+    s = db.session.query(Status).order_by('released_at')[-1]
+    return [s.name, (s.released_at).strftime("%m/%d/%Y, %H:%M:%S")]
