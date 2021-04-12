@@ -3,7 +3,6 @@ from APIServer.commons.api_utils import read_json
 
 PAGE_LIMIT = constants.HEROKU_PAGE_LIMIT
 MESSAGE_TEMPLATE = 'slack/templates/message.json'
-CONFIRM_FORM_LOCATION = 'slack/templates/confirmation.json'
 
 
 def slack_format_msg(msg_json):
