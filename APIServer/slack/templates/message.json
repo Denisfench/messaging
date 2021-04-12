@@ -23,16 +23,16 @@
 			"type": "section",
 			"text": {
 				"type": "mrkdwn",
-				"text": "Go to Messaging to view this msg and its thread"
+				"text": "Go to Socnet to view this msg and its thread"
 			},
 			"accessory": {
 					"type": "button",
 					"text": {
 						"type": "plain_text",
-						"text": "Go to Messaging"
+						"text": "Go to Socnet"
 					},
 					"style": "primary",
-					"url": "https://denisfench.github.io/messaging/webapp.html#/thread/id"
+					"url": "https://gcallah.github.io/socnet/webapp.html#/thread/id"
 				}
 		},
 		{
