@@ -2,7 +2,7 @@ from APIServer.commons import constants
 from APIServer.commons.api_utils import read_json
 
 PAGE_LIMIT = constants.HEROKU_PAGE_LIMIT
-MESSAGE_TEMPLATE = 'slack/templates/message.json'
+MESSAGE_TEMPLATE = 'heroku/templates/message.json'
 
 
 def slack_format_msg(msg_json):
