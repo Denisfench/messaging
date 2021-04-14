@@ -7,7 +7,7 @@
 			"type": "section",
 			"text": {
 				"type": "mrkdwn",
-				"text": "*Event* (_Status_)\nDescription"
+				"text": "*Fire* (_Active_)\nFire in the building"
 			}
 		},
 		{
@@ -15,7 +15,7 @@
 			"elements": [
 				{
 					"type": "mrkdwn",
-					"text": "Location\nDatetime\nPriority\nby *Sender*"
+					"text": "New York City, New York, 10001, USA\n2020-03-04 17:54:20\nHigh\nby *Socnet Tester*"
 				}
 			]
 		},
@@ -32,7 +32,7 @@
 						"text": "Go to Socnet"
 					},
 					"style": "primary",
-					"url": "https://gcallah.github.io/socnet/webapp.html#/thread/id"
+					"url": "https://gcallah.github.io/socnet/webapp.html#/thread/1"
 				}
 		},
 		{

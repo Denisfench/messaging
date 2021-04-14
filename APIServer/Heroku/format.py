@@ -5,7 +5,7 @@ PAGE_LIMIT = constants.HEROKU_PAGE_LIMIT
 MESSAGE_TEMPLATE = 'Heroku/templates/message.json'
 
 
-def slack_format_msg(msg_json):
+def heroku_format_msg(msg_json):
     """
     Convert a raw msg (json) to a formatted message in Slack
     """

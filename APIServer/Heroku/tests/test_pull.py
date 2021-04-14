@@ -5,11 +5,16 @@ import responses
 from APIServer.commons.api_utils import read_json
 from APIServer.Heroku.pull import get_heroku_deployments
 from APIServer.Heroku.pull import send_text_to_slack_channel
+from APIServer.Heroku.format import heroku_format_msg
 
 HEROKU_CONFIG_PATH = 'APIServer/Heroku/heroku_config.json'
 heroku_config = read_json(HEROKU_CONFIG_PATH)
 SLACK_CONFIG_PATH = 'slack/slack_config.json'
 slack_config = read_json(SLACK_CONFIG_PATH)
+SAMPLE_MESSAGE_PATH = \
+    'APIServer/test_data/heroku/formatted_heroku_message.json'
+
+sample_message = read_json(SAMPLE_MESSAGE_PATH)
 
 
 class HerokuTests(TestCase):
@@ -79,3 +84,24 @@ class HerokuTests(TestCase):
         if (self.assertEqual('ok', response[200]) is False):
             if (self.assertEqual('not found', response[404]) is False):
                 self.assertEqual('service unavailable', response[503])
+
+    def testFormatMsg(self):
+        """
+        Testing if slack_format_msg works
+        """
+        ret = heroku_format_msg([])
+        self.assertEqual({'text':
+                         'This msg does not exist or has been deleted.'},
+                         ret)
+        ret = heroku_format_msg([(1,
+                                  '2020-03-04 17:54:20',
+                                  '10001',
+                                  'New York City',
+                                  'New York',
+                                  'USA',
+                                  'Fire',
+                                  'Fire in the building',
+                                  'High',
+                                  'Socnet Tester',
+                                  'Active')])
+        self.assertEqual(sample_message, ret)
