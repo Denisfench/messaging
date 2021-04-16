@@ -6,6 +6,8 @@ HEROKU_CONFIG_PATH = 'Heroku/heroku_config.json'
 heroku_config = read_json(HEROKU_CONFIG_PATH)
 SLACK_CONFIG_PATH = 'slack/slack_config.json'
 slack_config = read_json(SLACK_CONFIG_PATH)
+EMAIL_CONFIG_PATH = 'Heroku/email_config.json'
+email_config = read_json(EMAIL_CONFIG_PATH)
 
 
 def get_heroku_deployments(server):
@@ -26,3 +28,13 @@ def send_text_to_slack_channel(textToSend, channel):
                "Content-Type": "application/json; charset=utf-8"}
     response = requests.post(URL, json=textToSend, headers=headers)
     return {response.status_code: response.text}
+
+
+def send_email(textToSend, email):
+    URL = email_config["URL"]
+    headers = {"Authorization": email_config['Email_Token'],
+               "Content-Type": "application/json"}
+    response = requests.post(URL, json=textToSend, headers=headers)
+    # need to complete
+    # using SENDGRID API https://sendgrid.com/solutions/email-api/
+    return response
