@@ -105,3 +105,12 @@ class HerokuTests(TestCase):
                                   'Socnet Tester',
                                   'Active')])
         self.assertEqual(sample_message, ret)
+
+    def testLatestDeployment(self):
+        """ WIP
+        Testing if latest_deployment from operations.py works
+
+        n = db.session.write_status().convert_name()
+        d = db.session.latest_deployment()
+        d.assertEquals(n)
+        """
