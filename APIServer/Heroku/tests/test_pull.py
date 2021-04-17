@@ -111,7 +111,7 @@ class HerokuTests(TestCase):
         Testing if latest_deployment from operations.py works
             adding in new status and checking that latest deployment
             finds same status to be most recent
-            
+
         n = db.session.write_status().convert_name()
         d = db.session.latest_deployment()
         d.assertEquals(n)

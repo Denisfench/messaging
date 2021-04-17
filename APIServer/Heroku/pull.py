@@ -1,12 +1,9 @@
 import requests
 from APIServer.commons.api_utils import read_json
+from datetime import date
 
-import os
 # from sendgrid import SendGridAPIClient
 # from sendgrid.helpers.mail import Mail
-
-import datetime
-from datetime import date
 
 HEROKU_CONFIG_PATH = 'Heroku/heroku_config.json'
 heroku_config = read_json(HEROKU_CONFIG_PATH)
@@ -14,7 +11,7 @@ SLACK_CONFIG_PATH = 'slack/slack_config.json'
 slack_config = read_json(SLACK_CONFIG_PATH)
 EMAIL_CONFIG_PATH = 'Heroku/email_config.json'
 email_config = read_json(EMAIL_CONFIG_PATH)
-#SENDGRID_API_KEY = <need to make>
+# SENDGRID_API_KEY = <need to make>
 
 
 def get_heroku_deployments(server):
@@ -43,12 +40,13 @@ def send_email(textToSend, email):
                "Content-Type": "application/json"}
     response = requests.post(URL, json=textToSend, headers=headers)
     today = date.today()
-    message = Mail(
-        #need to find from_email
-        from_email='from_email@example.com',
-        to_emails='ejc369@nyu.edu',
-        subject='DevOps: Messaging Deployments - '+today,
-        html_content='<strong>response</strong>')
+    print(today)
+    #    message = Mail(
+    #        # need to find from_email
+    #        from_email='from_email@example.com',
+    #        to_emails='ejc369@nyu.edu',
+    #        subject='DevOps: Messaging Deployments - ' + today,
+    #        html_content='<strong>response</strong>')
     '''
     try:
         #need to make new constant SENDGRID_API_KEY
