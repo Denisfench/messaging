@@ -2,8 +2,8 @@ import requests
 from APIServer.commons.api_utils import read_json
 
 import os
-from sendgrid import SendGridAPIClient
-from sendgrid.helpers.mail import Mail
+# from sendgrid import SendGridAPIClient
+# from sendgrid.helpers.mail import Mail
 
 import datetime
 from datetime import date
@@ -49,6 +49,7 @@ def send_email(textToSend, email):
         to_emails='ejc369@nyu.edu',
         subject='DevOps: Messaging Deployments - '+today,
         html_content='<strong>response</strong>')
+    '''
     try:
         #need to make new constant SENDGRID_API_KEY
         #https://sendgrid.com/docs/ui/account-and-settings/api-keys/
@@ -56,6 +57,7 @@ def send_email(textToSend, email):
         response = sg.send(message)
     except Exception as e:
         print(e.message)
+    '''
     # need to complete
     # using SENDGRID API https://sendgrid.com/solutions/email-api/
     return response
