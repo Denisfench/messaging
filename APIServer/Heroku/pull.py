@@ -1,12 +1,12 @@
 import requests
 from APIServer.commons.api_utils import read_json
 
-
+import smtplib
 # for dealing with attachement MIME types
 from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
 SCOPES = ['https://mail.google.com/']
-our_email = 'rabiya.sharieff@gmail.com'  # for testing
 
 HEROKU_CONFIG_PATH = 'Heroku/heroku_config.json'
 heroku_config = read_json(HEROKU_CONFIG_PATH)
@@ -36,23 +36,37 @@ def send_text_to_slack_channel(textToSend, channel):
     return {response.status_code: response.text}
 
 
-def create_email(sender, to, subject, message_text):
+def create_email(sender, to):
     """Create a message for an email.
 
     Returns:
     An object containing a base64url encoded email object.
     """
-    message = MIMEText(message_text)
+    message = MIMEMultipart()
     message['to'] = to
     message['from'] = sender
-    message['subject'] = subject
-    return {'raw': (message.as_string())}
+    message['subject'] = " Heroku Deployments Status"
+    body = " Email containing Heroku deployment status."
+    body = MIMEText(body, 'html')
+    message.attach(body)
+    return message.as_string()  # need to encode
 
 
-def send_email(textToSend, email):
-    URL = email_config["URL"]
-    headers = {"Authorization": email_config['Email_Token'],
-               "Content-Type": "application/json"}
-    response = requests.post(URL, json=textToSend, headers=headers)
-    # need to complete
-    return response
+def send_email(sender, to):
+    # URL = email_config["URL"]
+    # headers = {"Authorization": email_config['Email_Token'],
+    #            "Content-Type": "application/json"}
+    # response = requests.post(URL, json=textToSend, headers=headers)
+
+    to = "rabiya.sharieff@gmail.com"  # for testing
+    sender = "rs5981@nyu.edu"
+
+    # username = gmail_user  # need to configure
+    # password = gmail_password
+
+    server = smtplib.SMTP("smtp.gmail.com:587")
+    server.starttls()
+    # server.login(username, password)
+    msg = create_email(sender, to)
+    server.sendmail(sender, to, msg)
+    server.quit()
