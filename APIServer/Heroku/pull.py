@@ -1,6 +1,9 @@
 import requests
 from APIServer.commons.api_utils import read_json
+from datetime import date
 
+# from sendgrid import SendGridAPIClient
+# from sendgrid.helpers.mail import Mail
 
 HEROKU_CONFIG_PATH = 'Heroku/heroku_config.json'
 heroku_config = read_json(HEROKU_CONFIG_PATH)
@@ -8,6 +11,7 @@ SLACK_CONFIG_PATH = 'slack/slack_config.json'
 slack_config = read_json(SLACK_CONFIG_PATH)
 EMAIL_CONFIG_PATH = 'Heroku/email_config.json'
 email_config = read_json(EMAIL_CONFIG_PATH)
+# SENDGRID_API_KEY = <need to make>
 
 
 def get_heroku_deployments(server):
@@ -35,6 +39,23 @@ def send_email(textToSend, email):
     headers = {"Authorization": email_config['Email_Token'],
                "Content-Type": "application/json"}
     response = requests.post(URL, json=textToSend, headers=headers)
+    today = date.today()
+    print(today)
+    #    message = Mail(
+    #        # need to find from_email
+    #        from_email='from_email@example.com',
+    #        to_emails='ejc369@nyu.edu',
+    #        subject='DevOps: Messaging Deployments - ' + today,
+    #        html_content='<strong>response</strong>')
+    '''
+    try:
+        #need to make new constant SENDGRID_API_KEY
+        #https://sendgrid.com/docs/ui/account-and-settings/api-keys/
+        sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
+        response = sg.send(message)
+    except Exception as e:
+        print(e.message)
+    '''
     # need to complete
     # using SENDGRID API https://sendgrid.com/solutions/email-api/
     return response
