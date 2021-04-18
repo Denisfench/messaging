@@ -1,13 +1,13 @@
-# MESSAGING API server
+# SOCNET API server
 from flask import request
 from APIServer import create_app
 from flask_restplus import Resource, Api, fields
 from APIServer.commons.form_api import get_msg_form
 from APIServer.commons.api_utils import read_json
 from APIServer.commons.endpoint_api import get_endpoints
-from APIServer.Heroku.operations import write_status
+
 from APIServer.Heroku.pull import get_heroku_deployments
-from APIServer.Heroku.operations import read_heroku_apps
+
 from APIServer.msgs.operations import read_filtered_msgs
 from APIServer.msgs.operations import write_msg
 from APIServer.msgs.operations import read_msg
@@ -126,19 +126,6 @@ class OldestMsg(Resource):
         return {"oldest_msg": oldest_msg()}
 
 
-@api.route('/heroku_apps')
-class HerokuMsgsLists(Resource):
-    @api.doc(params={'app_id': 'Filter apps by app_id'})
-    @api.doc(params={'name': 'Filter apps by name'})
-    @api.doc(params={'released_at': 'Filter apps by date'})
-    def get(self):
-        """
-        Get multiple (filtered) heroku app details based
-        on the query parameters
-        """
-        return read_heroku_apps(request.args)
-
-
 @api.route('/msgs')
 class MsgsLists(Resource):
     @api.doc(params={'priority': 'Filter messages by priority'})
@@ -237,7 +224,6 @@ class HerokuDeployments(Resource):
         Get status of heroku deployments
         """
         deploys = get_heroku_deployments('SERVER GOES HERE!')
-        write_status(deploys)
         return deploys
 
 
