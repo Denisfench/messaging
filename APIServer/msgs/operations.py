@@ -164,29 +164,26 @@ def delete_msg(id):
     return 'Message ' + str(id) + ' deleted'
 
 
-def add_filter(filter_cond, msgs, filter_fld):
-    print(filter_cond)
-    if filter_cond:
-        filter_req = query_params_to_list(filter_cond)
-        print(filter_req)
-        msgs = msgs.filter(filter_fld.in_(filter_req))
-    return msgs
-
-
 def read_filtered_msgs(query_params):
-    priority = query_params.get('priority')
-    date = query_params.get('date')
-    msg_type = query_params.get('type')
-    region = query_params.get('region')
-    country = query_params.get('country')
-    # limit = query_params.get('limit', DEFAULT_LIMIT)
-    # offset = query_params.get('offset', DEFAULT_OFFSET)
+    priority_value = query_params.get('priority')
+    date_value = query_params.get('date')
+    type_value = query_params.get('type')
+    region_value = query_params.get('region')
+    country_value = query_params.get('country')
+    limit = query_params.get('limit', DEFAULT_LIMIT)
+    offset = query_params.get('offset', DEFAULT_OFFSET)
     active = query_params.get('active')
+    msgs = None
 
-    # let's init messages to start!
-    msgs = Message.query.order_by(Message.event_datetime.desc())
-    # we need to set offset and limit after the filters!
-    #                  .offset(offset).limit(limit)
+    if region_value:
+        required_regions = query_params_to_list(region_value)
+        # print(required_regions)
+        if msgs:
+            msgs = Message.query.filter(
+                Message.event_state.in_(required_regions))
+        else:
+            msgs = Message.query.filter(
+                Message.event_state.in_(required_regions))
 
     if active:
         active = active.strip()
@@ -195,26 +192,69 @@ def read_filtered_msgs(query_params):
         non_type = None
         if active == 'n':
             active_bool = False
-        if active_bool is True:
-            msgs = msgs.filter(Message.active == active_bool)
+        if msgs:
+            if active_bool is True:
+                msgs = msgs.filter(Message.active == active_bool)
+            else:
+                msgs = msgs.filter(
+                    (Message.active == active_bool)
+                    | (Message.active == non_type))
         else:
-            msgs = msgs.filter(
-                (Message.active == active_bool)
-                | (Message.active == non_type))
+            if active_bool is True:
+                msgs = Message.query.filter(Message.active == active_bool)
+            else:
+                msgs = Message.query.filter(
+                    (Message.active == active_bool)
+                    | (Message.active == non_type))
 
-    msgs = add_filter(region, msgs, Message.event_state)
-    msgs = add_filter(priority, msgs, Message.event_priority)
-    msgs = add_filter(msg_type, msgs, Message.event_type)
-    msgs = add_filter(country, msgs, Message.event_country)
+    if priority_value:
+        required_priority = query_params_to_list(priority_value)
+        # print(required_priority)
+        if msgs:
+            msgs = msgs.filter(Message.event_priority.in_(required_priority))
+        else:
+            msgs = Message.query.filter(
+                Message.event_priority.in_(required_priority))
 
-    if date:
+    if date_value:
         # parse date input in any format (MM-DD-YYY, DD-MM-YYYY, MM/DD/YYYY...)
-        required_datetime = parse(date, fuzzy=True)
+        required_datetime = parse(date_value, fuzzy=True)
         # print(required_datetime)
-        msgs = msgs.filter(
-            Message.event_datetime >= required_datetime)
+        if msgs:
+            msgs = msgs.filter(
+                Message.event_datetime >= required_datetime)
+        else:
+            msgs = Message.query.filter(
+                Message.event_datetime >= required_datetime)
 
-    print(msgs)
+    if type_value:
+        required_type = query_params_to_list(type_value)
+        # print(required_type)
+        if msgs:
+            msgs = msgs.filter(
+                Message.event_type.in_(required_type))
+        else:
+            msgs = Message.query.filter(
+                Message.event_type.in_(required_type))
+
+    if country_value:
+        required_country = query_params_to_list(country_value)
+        # print(required_country)
+        if msgs:
+            msgs = msgs.filter(
+                Message.event_country.in_(required_country))
+        else:
+            msgs = Message.query.filter(
+                Message.event_country.in_(required_country))
+    if msgs:
+        msgs = msgs.order_by(Message.event_datetime.desc()) \
+            .offset(offset).limit(limit)
+    else:
+        msgs = Message.query.order_by(Message.event_datetime.desc()) \
+                      .offset(offset).limit(limit)
+
+    # msgs = msgs.all()
+    # print(msgs)
     msg_schema = MessageSchema(many=True)
     msgs_json = msg_schema.dump(msgs)
     # print(dic_lst_to_tuple_lst(msgs_json))

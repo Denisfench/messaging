@@ -1,47 +1,36 @@
-import re
-import os
-
 from APIServer.commons import constants
 from APIServer.commons.api_utils import read_json
+
+import re
 
 
 PAGE_LIMIT = constants.SLACK_PAGE_LIMIT
 MESSAGE_TEMPLATE = 'slack/templates/message.json'
 CONFIRM_FORM_LOCATION = 'slack/templates/confirmation.json'
 
-MSG_ID = 0
-DATETIME = 1
-EVENT = 6
-
-thread_url = os.getenv('THREAD_URL',
-                       'https://gcallah.github.io/socnet/webapp.html#/thread/')
-
 
 def slack_format_msg(msg_json):
     """
     Convert a raw msg (json) to a formatted message in Slack
-    QUESTION: Why is `msg_json` a list, when we only seem interested in
-    one item?
     """
     if msg_json == []:
         return {'text': 'This msg does not exist or has been deleted.'}
 
     message = read_json(MESSAGE_TEMPLATE)
 
-    our_msg = msg_json[0]
-
-    msg_id = our_msg[MSG_ID]
-    datetime = our_msg[DATETIME]
-    location = our_msg[3] + ', ' \
-        + our_msg[4] + ', ' \
-        + our_msg[2] + ', ' \
-        + our_msg[5]
-    event = our_msg[EVENT]
-    description = our_msg[7]
-    priority = our_msg[8]
-    sender = our_msg[9]
-    active_status = our_msg[10]
-    url = thread_url + str(msg_id)
+    msg_id = msg_json[0][0]
+    datetime = msg_json[0][1]
+    location = msg_json[0][3] + ', ' \
+        + msg_json[0][4] + ', ' \
+        + msg_json[0][2] + ', ' \
+        + msg_json[0][5]
+    event = msg_json[0][6]
+    description = msg_json[0][7]
+    priority = msg_json[0][8]
+    sender = msg_json[0][9]
+    active_status = msg_json[0][10]
+    THREAD_URL = 'https://gcallah.github.io/socnet/webapp.html#/thread/'
+    url = THREAD_URL + str(msg_id)
 
     message['blocks'][1]['text']['text'] = '*' + event \
         + '* (_' + active_status + '_)\n' + description
