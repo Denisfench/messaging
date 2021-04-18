@@ -36,5 +36,4 @@ def send_email(textToSend, email):
                "Content-Type": "application/json"}
     response = requests.post(URL, json=textToSend, headers=headers)
     # need to complete
-    # using SENDGRID API https://sendgrid.com/solutions/email-api/
     return response
