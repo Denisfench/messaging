@@ -55,12 +55,27 @@ def write_status(status):
     return "Status " + str(new_status.id) + " inserted"
 
 
+def oldest_deployment():
+    """
+    Returns the first deployment
+    """
+    s = db.session.query(Status).order_by('released_at')
+    return [s.name, (s.released_at).strftime("%m/%d/%Y, %H:%M:%S")]
+
+
 def latest_deployment():
     """
     find latest deployments and return it
     """
     s = db.session.query(Status).order_by('released_at')[-1]
     return [s.name, (s.released_at).strftime("%m/%d/%Y, %H:%M:%S")]
+
+
+def number_of_deployments():
+    """
+    This will return the total number of deployments.
+    """
+    return db.session.query(Status).count()
 
 
 def dict_lst_to_tuple_lst(obj):
