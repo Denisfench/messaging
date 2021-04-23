@@ -165,10 +165,10 @@ def delete_msg(id):
 
 
 def add_filter(filter_cond, msgs, filter_fld):
-    print(filter_cond)
+    # print(filter_cond)
     if filter_cond:
         filter_req = query_params_to_list(filter_cond)
-        print(filter_req)
+        # print(filter_req)
         msgs = msgs.filter(filter_fld.in_(filter_req))
     return msgs
 

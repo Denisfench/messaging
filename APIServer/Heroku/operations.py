@@ -5,7 +5,7 @@ import json
 from APIServer import db
 
 from APIServer.msgs.operations import convert_to_dic_list
-from APIServer.msgs.operations import query_params_to_list
+from APIServer.msgs.operations import add_filter
 
 import pytz
 from dateutil.parser import parse
@@ -63,7 +63,11 @@ def latest_deployment():
     return [s.name, (s.released_at).strftime("%m/%d/%Y, %H:%M:%S")]
 
 
-def dic_lst_to_tuple_lst(obj):
+def dict_lst_to_tuple_lst(obj):
+    """
+    converts list of dictionaries
+    to list of tuples
+    """
     dic_lst = convert_to_dic_list(obj)
     final_lst = []
     for dic in dic_lst:
@@ -84,17 +88,10 @@ def read_heroku_apps(query_params):
     app_id = query_params.get('app_id')
     name = query_params.get('name')
     released_at = query_params.get('released_at')
-    # need to handle multiple filter conditions
-    if (app_id):
-        required_parameter = query_params_to_list(app_id)
-    elif (name):
-        required_parameter = query_params_to_list(name)
-    elif (released_at):
-        required_parameter = query_params_to_list(released_at)
-    try:
-        status = Status.query.filter(Status.name.in_(required_parameter))
-    except Exception:
-        status = Status.query.all()
+    status = Status.query.order_by(Status.released_at.desc())
+    status = add_filter(app_id, status, Status.app_id)
+    status = add_filter(name, status, Status.name)
+    status = add_filter(released_at, status, Status.released_at)
     status_schema = StatusSchema(many=True)
-    msgs_json = status_schema.dump(status)
-    return dic_lst_to_tuple_lst(msgs_json)
+    status_json = status_schema.dump(status)
+    return dict_lst_to_tuple_lst(status_json)
