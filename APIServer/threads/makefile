@@ -7,7 +7,7 @@ lint: $(patsubst %.py,%.pylint,$(PYTHONFILES))
 tests: pytests lint
 
 pytests:
-	nosetests --with-coverage --cover-package=APIServer.Heroku
+	nosetests --with-coverage --cover-package=APIServer.threads
 
 %.pylint:
 	$(PYLINT) $(PYLINTFLAGS) $*.py
