@@ -1,5 +1,5 @@
 {
-    "URL": "https://api.sendgrid.com/v3/mail/send",
-	"Email_Token": "Bearer $SENDGRID_API_KEY"
+    "USER_EMAIL": "$EMAIL",
+	"USER_PASSWORD": "$PASSWORD"
 	  
 }
