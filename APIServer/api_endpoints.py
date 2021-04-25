@@ -7,6 +7,7 @@ from APIServer.commons.api_utils import read_json
 from APIServer.commons.endpoint_api import get_endpoints
 from APIServer.Heroku.operations import write_status
 from APIServer.Heroku.pull import get_heroku_deployments
+# from APIServer.Heroku.pull import send_email
 from APIServer.Heroku.operations import read_heroku_apps
 from APIServer.msgs.operations import read_filtered_msgs
 from APIServer.msgs.operations import write_msg
@@ -126,19 +127,6 @@ class OldestMsg(Resource):
         return {"oldest_msg": oldest_msg()}
 
 
-@api.route('/heroku_apps')
-class HerokuMsgsLists(Resource):
-    @api.doc(params={'app_id': 'Filter apps by app_id'})
-    @api.doc(params={'name': 'Filter apps by name'})
-    @api.doc(params={'released_at': 'Filter apps by date'})
-    def get(self):
-        """
-        Get multiple (filtered) heroku app details based
-        on the query parameters
-        """
-        return read_heroku_apps(request.args)
-
-
 @api.route('/msgs')
 class MsgsLists(Resource):
     @api.doc(params={'priority': 'Filter messages by priority'})
@@ -211,6 +199,41 @@ class Threads(Resource):
         return add_comment(request.json, id)
 
 
+@api.route('/heroku/deployments')
+class HerokuDeployments(Resource):
+    def get(self):
+        """
+        Get status of heroku deployments
+        """
+        deploys = get_heroku_deployments('SERVER GOES HERE!')
+        write_status(deploys)
+        return deploys
+
+
+@api.route('/heroku_apps')
+class HerokuMsgsLists(Resource):
+    @api.doc(params={'app_id': 'Filter apps by app_id'})
+    @api.doc(params={'name': 'Filter apps by name'})
+    @api.doc(params={'released_at': 'Filter apps by date'})
+    def get(self):
+        """
+        Get multiple (filtered) heroku app details based
+        on the query parameters
+        """
+        return read_heroku_apps(request.args)
+
+
+@api.route('/heroku_email')
+class SendHerokuInfo(Resource):
+    @api.doc(params={'email': 'Enter Email to Send to'})
+    def post(self):
+        """
+        Send email of latest heroku deployment
+        """
+        # send_email(request.args)
+        return "need to fix send_email func"
+
+
 @api.route('/slack/post_msg')
 class SlackPostMsg(Resource):
     def post(self):
@@ -228,17 +251,6 @@ class SlackPostMsg(Resource):
         send_slack_log('Response info:')
         send_slack_log(str(response))
         return 'Please enter the new msg information in the form'
-
-
-@api.route('/heroku/deployments')
-class HerokuDeployments(Resource):
-    def get(self):
-        """
-        Get status of heroku deployments
-        """
-        deploys = get_heroku_deployments('SERVER GOES HERE!')
-        write_status(deploys)
-        return deploys
 
 
 @api.route('/slack/get_msg')
