@@ -1,6 +1,6 @@
 import requests
 from APIServer.commons.api_utils import read_json
-
+# from APIServer.Heroku.operations import latest_deployment
 import smtplib
 # for dealing with attachement MIME types
 from email.mime.text import MIMEText
@@ -46,27 +46,28 @@ def create_email(sender, to):
     message['to'] = to
     message['from'] = sender
     message['subject'] = " Heroku Deployments Status"
-    body = " Email containing Heroku deployment status."
+    body = "latest_deployment()"
     body = MIMEText(body, 'html')
     message.attach(body)
     return message.as_string()  # need to encode
 
 
-def send_email(sender, to):
+def send_email(to):
     # URL = email_config["URL"]
     # headers = {"Authorization": email_config['Email_Token'],
     #            "Content-Type": "application/json"}
     # response = requests.post(URL, json=textToSend, headers=headers)
 
-    to = "rabiya.sharieff@gmail.com"  # for testing
-    sender = "rs5981@nyu.edu"
+    # to = "rabiya.sharieff@gmail.com"  # for testing
+    # sender = "rs5981@nyu.edu"
 
-    # username = gmail_user  # need to configure
-    # password = gmail_password
+    username = email_config["USER_EMAIL"]
+    password = email_config["USER_PASSWORD"]
 
     server = smtplib.SMTP("smtp.gmail.com:587")
+    server.ehlo()
     server.starttls()
-    # server.login(username, password)
-    msg = create_email(sender, to)
-    server.sendmail(sender, to, msg)
+    server.login(username, password)
+    msg = create_email(username, to)
+    server.sendmail(username, to, msg)
     server.quit()
