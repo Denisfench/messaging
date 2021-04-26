@@ -6,9 +6,12 @@ from APIServer.commons.api_utils import read_json
 from APIServer.Heroku.pull import get_heroku_deployments
 from APIServer.Heroku.pull import send_text_to_slack_channel
 
-HEROKU_CONFIG_PATH = 'APIServer/Heroku/heroku_config.json'
+HEROKU_CONFIG_PATH = \
+    'APIServer/Heroku/heroku_config.json'
+SLACK_CONFIG_PATH = \
+    'APIServer/slack/slack_config.json'
+
 heroku_config = read_json(HEROKU_CONFIG_PATH)
-SLACK_CONFIG_PATH = 'slack/slack_config.json'
 slack_config = read_json(SLACK_CONFIG_PATH)
 
 

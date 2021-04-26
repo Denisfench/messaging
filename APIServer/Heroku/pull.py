@@ -8,11 +8,15 @@ from email.mime.multipart import MIMEMultipart
 
 SCOPES = ['https://mail.google.com/']
 
-HEROKU_CONFIG_PATH = 'Heroku/heroku_config.json'
+HEROKU_CONFIG_PATH = \
+    'APIServer/Heroku/heroku_config.json'
+SLACK_CONFIG_PATH = \
+    'APIServer/slack/slack_config.json'
+EMAIL_CONFIG_PATH = \
+    'APIServer/Heroku/email_config.json'
+
 heroku_config = read_json(HEROKU_CONFIG_PATH)
-SLACK_CONFIG_PATH = 'slack/slack_config.json'
 slack_config = read_json(SLACK_CONFIG_PATH)
-EMAIL_CONFIG_PATH = 'Heroku/email_config.json'
 email_config = read_json(EMAIL_CONFIG_PATH)
 
 
@@ -20,7 +24,7 @@ def get_heroku_deployments(server):
     """
     We will return (all?) Heroku deployments for the app of interest.
     """
-    URL = "https://api.heroku.com/apps"
+    URL = heroku_config['Heroku_Status']
     headers = {"Accept": "application/vnd.heroku+json; version=3",
                "Authorization": heroku_config['Heroku_Token']}
     response = requests.get(url=URL, headers=headers)
@@ -28,7 +32,7 @@ def get_heroku_deployments(server):
 
 
 def send_text_to_slack_channel(textToSend, channel):
-    URL = 'https://slack.com/api/chat.postMessage'
+    URL = slack_config['Slack_Message_Post']
     textToSend['channel'] = channel
     headers = {"Authorization": slack_config['Bot_Access_Token'],
                "Content-Type": "application/json; charset=utf-8"}
