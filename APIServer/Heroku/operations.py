@@ -23,7 +23,16 @@ def write_status(status):
     Add/update an app info to database
     """
     status = json.loads(str(status[200]))
-    print(len(status))
+
+    # if there's nothing in db, insert a row found
+    if(len(status) == 0):
+        inpRow = convert_name(status[0])
+        new_status = Status(app_id=inpRow["app_id"],
+                            name=inpRow['name'],
+                            released_at=inpRow['released_at'])
+        db.session.add(new_status)
+        db.session.commit()
+    # go through each app
     for i in range(len(status)):
         """
         insert each unique app into db
