@@ -6,6 +6,7 @@ from APIServer.commons.form_api import get_msg_form
 from APIServer.commons.api_utils import read_json
 from APIServer.commons.endpoint_api import get_endpoints
 from APIServer.Heroku.operations import write_status
+from APIServer.Heroku.operations import latest_deployment
 from APIServer.Heroku.pull import get_heroku_deployments
 # from APIServer.Heroku.pull import send_email
 from APIServer.Heroku.operations import read_heroku_apps
@@ -234,6 +235,18 @@ class SendHerokuInfo(Resource):
         return "need to fix send_email func"
 
 
+@api.route('/slack/post_heroku_deployment')
+class SlackPostHeroku(Resource):
+    def post(self):
+        """
+        Send notification to slack on latest heroku deployment
+        """
+        msg = latest_deployment()
+        msgToSend = msg[0] + " was deployed at " + msg[1]
+        send_slack_log(msgToSend)
+        return msgToSend
+
+
 @api.route('/slack/post_msg')
 class SlackPostMsg(Resource):
     def post(self):
@@ -243,6 +256,7 @@ class SlackPostMsg(Resource):
         send_slack_log('Entered /slack/post_msg')
         send_slack_log('Request info:')
         send_slack_log(str(request.form))
+        # unknown request.form
         trigger_id = request.form['trigger_id']
         channel_id = request.form['channel_id']
         response = open_form(channel_id,
