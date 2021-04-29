@@ -46,32 +46,27 @@ def create_email(sender, to):
     Returns:
     An object containing a base64url encoded email object.
     """
-    message = MIMEMultipart()
-    message['to'] = to
-    message['from'] = sender
-    message['subject'] = " Heroku Deployments Status"
+    message = MIMEMultipart()  # creates message
+    message['To'] = to
+    message['From'] = sender
+    message['Subject'] = " Heroku Deployments Status"
     body = "latest_deployment()"
-    body = MIMEText(body, 'html')
+    body = MIMEText(body, 'plain')
     message.attach(body)
+
     return message.as_string()  # need to encode
 
 
 def send_email(to):
-    # URL = email_config["URL"]
-    # headers = {"Authorization": email_config['Email_Token'],
-    #            "Content-Type": "application/json"}
-    # response = requests.post(URL, json=textToSend, headers=headers)
-
-    # to = "rabiya.sharieff@gmail.com"  # for testing
-    # sender = "rs5981@nyu.edu"
+    to = to
+    sender = "default@gmail.com"
 
     username = email_config["USER_EMAIL"]
     password = email_config["USER_PASSWORD"]
 
-    server = smtplib.SMTP("smtp.gmail.com:587")
-    server.ehlo()
+    server = smtplib.SMTP("smtp.gmail.com", port=587)
     server.starttls()
     server.login(username, password)
-    msg = create_email(username, to)
-    server.sendmail(username, to, msg)
+    msg = create_email(sender, to)
+    server.sendmail(sender, to, msg)
     server.quit()
