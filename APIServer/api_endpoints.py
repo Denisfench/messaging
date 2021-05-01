@@ -8,7 +8,7 @@ from APIServer.commons.endpoint_api import get_endpoints
 from APIServer.Heroku.operations import write_status
 from APIServer.Heroku.operations import latest_deployment
 from APIServer.Heroku.pull import get_heroku_deployments
-# from APIServer.Heroku.pull import send_email
+from APIServer.Heroku.pull import send_email
 from APIServer.Heroku.operations import read_heroku_apps
 from APIServer.msgs.operations import read_filtered_msgs
 from APIServer.msgs.operations import write_msg
@@ -231,8 +231,7 @@ class SendHerokuInfo(Resource):
         """
         Send email of latest heroku deployment
         """
-        # send_email(request.args)
-        return "need to fix send_email func"
+        return send_email(request.args)
 
 
 @api.route('/slack/post_heroku_deployment')

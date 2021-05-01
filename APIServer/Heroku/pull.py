@@ -1,10 +1,8 @@
 import requests
 from APIServer.commons.api_utils import read_json
-# from APIServer.Heroku.operations import latest_deployment
+from APIServer.Heroku.operations import latest_deployment
 import smtplib
-# for dealing with attachement MIME types
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
+from email.message import EmailMessage
 
 SCOPES = ['https://mail.google.com/']
 
@@ -46,27 +44,28 @@ def create_email(sender, to):
     Returns:
     An object containing a base64url encoded email object.
     """
-    message = MIMEMultipart()  # creates message
-    message['To'] = to
-    message['From'] = sender
-    message['Subject'] = " Heroku Deployments Status"
-    body = "latest_deployment()"
-    body = MIMEText(body, 'plain')
-    message.attach(body)
+    msg = EmailMessage()
+    msg['Subject'] = "Heroku Latest Deployments"
+    msg['From'] = sender
+    msg['To'] = to
+    body = latest_deployment()
+    msgToSend = body[0] + " was deployed at " + body[1]
+    msg.set_content(msgToSend)
 
-    return message.as_string()  # need to encode
+    return msg  # need to encode
 
 
 def send_email(to):
     to = to
-    sender = "default@gmail.com"
+    sender = "rabiya.sharieff@gmail.com"
 
     username = email_config["USER_EMAIL"]
     password = email_config["USER_PASSWORD"]
 
     server = smtplib.SMTP("smtp.gmail.com", port=587)
+    server.ehlo()
     server.starttls()
     server.login(username, password)
     msg = create_email(sender, to)
-    server.sendmail(sender, to, msg)
+    server.send_message(msg)
     server.quit()
