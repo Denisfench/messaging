@@ -83,11 +83,10 @@ class HerokuTests(TestCase):
             if (self.assertEqual('not found', response[404]) is False):
                 self.assertEqual('service unavailable', response[503])
 
-    def testLatestDeployment(self):
+    def testCreateEmail(self):
         """ WIP
-        Testing if latest_deployment from operations.py works
+        Testing if create_email from pull.py works through returned object
 
-        n = db.session.write_status().convert_name()
-        d = db.session.latest_deployment()
-        d.assertEquals(n)
+        mail = create_email("indra.ratna.029@gmail.com","ir867@nyu.edu")
+        self.assertIsNotNone(mail)
         """
