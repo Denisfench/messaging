@@ -194,59 +194,6 @@ class Test(TestCase):
             rv = c.get('/msgs?active=y')
             self.assertEqual(eval(rv.data.decode('utf-8')[:-1]), [])
 
-    def test_threads(self):
-        """
-        Testing if threads module works
-        """
-        with app.test_client() as c:
-
-            rv = c.post('/msgs', json=test_json)
-            rv = c.post('/msgs', json=test_json)
-
-            rv = c.put('/threads/1', json={'text': 'some comment'})
-            self.assertEqual(rv.status_code, 200)
-
-            rv = c.put('/threads/2', json={'text': 'comment x'})
-            self.assertEqual(rv.status_code, 200)
-
-            rv = c.put('/threads/1', json={'text': 'new comment'})
-            self.assertEqual(rv.status_code, 200)
-
-            rv = c.put('/threads/1', json={'text': '3rd comment'})
-            self.assertEqual(rv.status_code, 200)
-
-            rv = c.put('/threads/2', json={'text': 'comment yy'})
-            self.assertEqual(rv.status_code, 200)
-
-            rv = c.put('/threads/2', json={'text': 'comment zzz'})
-            self.assertEqual(rv.status_code, 200)
-
-            rv = c.get('/threads/1')
-            self.assertEqual(eval(rv.data.decode('utf-8')[:-1]),
-                             [{"1": "some comment"},
-                              {"3": "new comment"},
-                              {"4": "3rd comment"}])
-
-            rv = c.delete('/msgs/1')
-
-            # The thread associated with the msg
-            # should be deleted after the msg is deleted
-            rv = c.get('/threads/1')
-            self.assertEqual(rv.status_code, 404)
-
-            rv = c.get('/threads/2')
-            self.assertEqual(eval(rv.data.decode('utf-8')[:-1]),
-                             [{"2": "comment x"},
-                              {"5": "comment yy"},
-                              {"6": "comment zzz"}])
-
-            rv = c.delete('/msgs/2')
-
-            # The thread associated with the msg
-            # should be deleted after the msg is deleted
-            rv = c.get('/threads/2')
-            self.assertEqual(rv.status_code, 404)
-
     def test_threads_err(self):
         """
         Testing if the threads module returns 404 code

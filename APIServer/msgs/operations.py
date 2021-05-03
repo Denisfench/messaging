@@ -1,11 +1,12 @@
-from APIServer.database.models import Message, Thread
+from APIServer.database.models import Message
 from APIServer.database.schema import MessageSchema
 from APIServer import db
-from APIServer.threads.operations import delete_thread
+
 
 from dateutil.parser import parse
 
 from APIServer.commons import constants
+import json
 
 
 DEFAULT_LIMIT = constants.API_SERVER_DEFAULT_LIMIT
@@ -75,25 +76,53 @@ def write_msg(msg):
     """
     Add a new message to database
     """
-    if ("event_zipcode" not in msg):
+    if 200 in msg:
+        msg = json.loads(str(msg[200]))
+        for i in msg:
+            """
+            insert each unique app into db
+            """
+            msg = {"event_type": i['id'],
+                   "event_description": i['name'],
+                   "event_datetime": i['released_at'],
+                   "event_priority": 3,
+                   "msg_sender": "Heroku"}
+            new_msg = Message(event_type=msg['event_type'],
+                              event_description=msg['event_description'],
+                              event_datetime=msg['event_datetime'],
+                              msg_sender=msg['msg_sender'],
+                              event_priority=msg['event_priority'])
+            database = db.session.query(Message)
+            check = database.filter(Message.event_type
+                                    == new_msg.event_type).first()
+            if (not check):
+                # unique app found
+                db.session.add(new_msg)
+                db.session.commit()
+            else:
+                # check if released_at parameter different from db
+                new = new_msg.event_datetime
+                old = check.event_datetime
+                if(old < new):
+                    # need to update released at field
+                    database.filter(Message.event_type
+                                    == new_msg.event_type).update(
+                        {Message.event_datetime: new_msg.event_datetime},
+                        synchronize_session=False)
+                    db.session.commit()
+    elif ("event_zipcode" not in msg):
         msg = convert_name(msg)
-    new_msg = Message(event_zipcode=msg['event_zipcode'],
-                      event_city=msg['event_city'],
-                      event_state=msg['event_state'],
-                      event_country=msg['event_country'],
-                      event_type=msg['event_type'],
-                      event_description=msg['event_description'],
-                      msg_sender=msg['msg_sender'],
-                      event_datetime=msg['event_datetime'],
-                      event_priority=msg['event_priority'])
-    db.session.add(new_msg)
-    db.session.commit()
-    # add a new thread for the message
-    new_thread = Thread(id=new_msg.id,
-                        first_comment_id=-1,
-                        last_comment_id=-1)
-    db.session.add(new_thread)
-    db.session.commit()
+        new_msg = Message(event_zipcode=msg['event_zipcode'],
+                          event_city=msg['event_city'],
+                          event_state=msg['event_state'],
+                          event_country=msg['event_country'],
+                          event_type=msg['event_type'],
+                          event_description=msg['event_description'],
+                          msg_sender=msg['msg_sender'],
+                          event_datetime=msg['event_datetime'],
+                          event_priority=msg['event_priority'])
+        db.session.add(new_msg)
+        db.session.commit()
     return "Message " + str(new_msg.id) + " inserted"
 
 
@@ -151,13 +180,11 @@ def read_msg(id):
 
 def delete_msg(id):
     """
-    delete a message and associated thread from the database
+    delete a message from the database
     """
     msg = Message.query.get(id)
     if msg is None:
         return {'message': 'Message ' + str(id) + ' does not exist'}, 404
-    # delete associated thread
-    delete_thread(id)
     # delete message
     db.session.delete(msg)
     db.session.commit()
@@ -179,6 +206,7 @@ def read_filtered_msgs(query_params):
     msg_type = query_params.get('type')
     region = query_params.get('region')
     country = query_params.get('country')
+    sender = query_params.get('sender')
     # limit = query_params.get('limit', DEFAULT_LIMIT)
     # offset = query_params.get('offset', DEFAULT_OFFSET)
     active = query_params.get('active')
@@ -206,7 +234,7 @@ def read_filtered_msgs(query_params):
     msgs = add_filter(priority, msgs, Message.event_priority)
     msgs = add_filter(msg_type, msgs, Message.event_type)
     msgs = add_filter(country, msgs, Message.event_country)
-
+    msgs = add_filter(sender, msgs, Message.msg_sender)
     if date:
         # parse date input in any format (MM-DD-YYY, DD-MM-YYYY, MM/DD/YYYY...)
         required_datetime = parse(date, fuzzy=True)

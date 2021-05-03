@@ -5,7 +5,6 @@ from flask_restplus import Resource, Api, fields
 from APIServer.commons.form_api import get_msg_form
 from APIServer.commons.api_utils import read_json
 from APIServer.commons.endpoint_api import get_endpoints
-from APIServer.Heroku.operations import write_status
 from APIServer.Heroku.operations import latest_deployment
 from APIServer.Heroku.pull import get_heroku_deployments
 from APIServer.Heroku.pull import send_email
@@ -130,6 +129,7 @@ class OldestMsg(Resource):
 
 @api.route('/msgs')
 class MsgsLists(Resource):
+    @api.doc(params={'sender': 'Filter messages by sender'})
     @api.doc(params={'priority': 'Filter messages by priority'})
     @api.doc(params={'date': 'Filter messages by date'})
     @api.doc(params={'type': 'Filter messages by type'})
@@ -207,7 +207,7 @@ class HerokuDeployments(Resource):
         Get status of heroku deployments
         """
         deploys = get_heroku_deployments('SERVER GOES HERE!')
-        write_status(deploys)
+        write_msg(deploys)
         return deploys
 
 
