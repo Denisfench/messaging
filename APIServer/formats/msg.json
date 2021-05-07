@@ -30,7 +30,7 @@
         "type": {
             "required": true,
             "type": "string",
-            "description": "What platform are you sending this message from?",
+            "description": "What platform is this message from?",
             "example": "Slack"
         },
         "description": {
@@ -43,13 +43,13 @@
             "required": true,
             "type": "string",
             "values": ["High", "Medium", "Low"],
-            "description": "What is the priority of your message?",
+            "description": "What is the priority of this message?",
             "example": "Medium"
         },
         "sender": {
             "required": true,
             "type": "string",
-            "description": "Who is sending the message?",
+            "description": "Who is sending this message?",
             "example": "Messaging API Server"
         }
     }

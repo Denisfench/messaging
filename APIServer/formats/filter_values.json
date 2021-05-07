@@ -53,22 +53,17 @@
         "type": {
             "name": "type",
             "type": "dropdown",
-            "placeholder": "E.g. Fire",
+            "placeholder": "E.g. Slack",
             "optionList": {
                 "1": {
-                    "key": "Fire",
-                    "text": "Fire",
-                    "value": "Fire"
+                    "key": "Slack",
+                    "text": "Slack",
+                    "value": "Slack"
                 },
                 "2": {
-                    "key": "Earthquake",
-                    "text": "Earthquake",
-                    "value": "Earthquake"
-                },
-                "3": {
-                    "key": "Ransomware",
-                    "text": "Ransomware",
-                    "value": "Ransomware"
+                    "key": "Heroku",
+                    "text": "Heroku",
+                    "value": "Heroku"
                 }
             }
         }
