@@ -4,7 +4,7 @@
         "datetime": {
             "required": true,
             "type": "datetime",
-            "description": "When did event occur?",
+            "description": "When are you sending this message?",
             "example": "2020-03-14 12:45:32"
         },
         "zipcode": {
@@ -30,27 +30,27 @@
         "type": {
             "required": true,
             "type": "string",
-            "description": "What is the type of emergecy?",
-            "example": "Fire"
+            "description": "What platform are you sending this message from?",
+            "example": "Slack"
         },
         "description": {
             "required": false,
             "type": "string",
-            "description": "What is the emergency?",
+            "description": "What is your message?",
             "example": "Smoke in the building"
         },
         "priority": {
             "required": true,
             "type": "string",
             "values": ["High", "Medium", "Low"],
-            "description": "How severe is the emergency?",
+            "description": "What is the priority of your message?",
             "example": "Medium"
         },
         "sender": {
             "required": true,
             "type": "string",
             "description": "Who is sending the message?",
-            "example": "Socnet API Server"
+            "example": "Messaging API Server"
         }
     }
 }
