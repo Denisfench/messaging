@@ -416,5 +416,14 @@ class MattermostMsgs(Resource):
         return {"text": responseText}
 
 
+@api.route('/apps/begum_messaging/webhooks')
+class WebHookTest(Resource):
+    def get(self):
+        """
+        Receives automatic post request from heroku
+        """
+        return request.args
+
+
 if __name__ == '__main__':
     app.run(host=config['host'], port=port, debug=config['debug'])
