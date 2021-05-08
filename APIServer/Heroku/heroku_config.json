@@ -6,5 +6,6 @@
 	"Slack_Views_Open": "https://slack.com/api/views.open",
 	"Bot_Access_Token": "Bearer xoxb-765850805047-949609123831-8NqdrRGPDmrNtED9M5D62Zl5",
 	"User_Access_Token": "Bearer xoxp-765850805047-790629649378-989309639635-00bf54bba4048c8414ad0983f630c586",
-	"Thread_URL": "https://denisfench.github.io/messaging/webapp.html#/thread/"
+	"Thread_URL": "https://denisfench.github.io/messaging/webapp.html#/thread/",
+	"Webhook_Secret": "1f006023b47ada3fb9f5b1e405fcb6832159b0e23d92cadf0fa6648ec218"
 }
