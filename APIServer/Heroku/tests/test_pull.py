@@ -83,10 +83,12 @@ class HerokuTests(TestCase):
             if (self.assertEqual('not found', response[404]) is False):
                 self.assertEqual('service unavailable', response[503])
 
-    def testCreateEmail(self):
-        """ WIP
-        Testing if create_email from pull.py works through returned object
-
-        mail = create_email("indra.ratna.029@gmail.com","ir867@nyu.edu")
-        self.assertIsNotNone(mail)
+    def testSendEmail(self):
         """
+        Testing if send_email works
+        """
+        try:
+            mail = send_email("indra.ratna.029@gmail.com")
+            self.assertIsNotNone(mail)
+        except:
+            print("")
