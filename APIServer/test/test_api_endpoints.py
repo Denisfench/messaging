@@ -2,7 +2,7 @@
 """
 from unittest import TestCase, main
 import json
-from flask_restplus import Resource
+from flask_restx import Resource
 import responses
 
 from APIServer import db

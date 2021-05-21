@@ -1,7 +1,7 @@
 # MESSAGING API server
 from flask import request
 from APIServer import create_app
-from flask_restplus import Resource, Api, fields
+from flask_restx import Resource, Api, fields
 from APIServer.commons.form_api import get_msg_form
 from APIServer.commons.api_utils import read_json
 from APIServer.commons.endpoint_api import get_endpoints
